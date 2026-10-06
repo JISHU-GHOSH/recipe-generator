@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+groq
+python-dotenv
+markdown-it-py
+linkify-it-py
+python-multipart
