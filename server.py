@@ -384,6 +384,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 def index():
     return render_page()
 
+@app.get("/api/health")
+def health():
+    return {"status": "ok", "app": "recipe-generator"}
+
 @app.post("/recipe", response_class=HTMLResponse)
 def get_recipe(dish: str = Form(...)):
     if not client:
