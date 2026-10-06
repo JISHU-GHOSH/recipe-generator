@@ -10,10 +10,7 @@ md = MarkdownIt("commonmark").enable(["table", "strikethrough"])
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
-if not api_key:
-    raise ValueError("GROQ_API_KEY not found in .env")
-
-client = Groq(api_key=api_key)
+client = Groq(api_key=api_key) if api_key else None
 app = FastAPI(title="SavorAI Recipe Generator")
 
 def render_page(dish_val: str = "", recipe_content: str = "") -> str:
@@ -389,6 +386,10 @@ def index():
 
 @app.post("/recipe", response_class=HTMLResponse)
 def get_recipe(dish: str = Form(...)):
+    if not client:
+        box = '<div class="recipe-box" style="color: red;">⚠️ Error: GROQ_API_KEY environment variable is not set in Vercel settings.</div>'
+        return render_page(dish_val=dish, recipe_content=box)
+        
     prompt = f"Give me a complete recipe for: {dish}"
     try:
         response = client.chat.completions.create(
