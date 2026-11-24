@@ -30,18 +30,17 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             --brand-green: #06C167;
             --brand-green-hover: #05A357;
             --surface-white: #FFFFFF;
-            --surface-soft: #F8F8F8;
+            --surface-soft: #F6F6F6;
             --surface-subtle: #EEEEEE;
             --ink-black: #0F0F0F;
             --ink-charcoal: #2C2C2E;
             --ink-muted: #6E6E6E;
             --ink-faint: #A0A0A0;
             --border-light: rgba(0, 0, 0, 0.08);
-            --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.06);
-            --shadow-pop: 0 24px 48px -12px rgba(0, 0, 0, 0.10);
+            --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 16px 32px rgba(0, 0, 0, 0.10);
             --radius-pill: 9999px;
-            --radius-card: 22px;
-            --radius-inner: 16px;
+            --radius-card: 16px;
         }}
 
         * {{
@@ -65,7 +64,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             color: #FFFFFF;
             font-size: 13px;
             font-weight: 600;
-            padding: 10px 24px;
+            padding: 9px 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -83,12 +82,12 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             text-transform: uppercase;
         }}
 
-        /* 2. BRAND NAVIGATION BAR */
+        /* 2. UBEREATS NAVIGATION */
         .brand-nav {{
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border-light);
@@ -101,7 +100,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .nav-left {{
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 28px;
         }}
 
         .brand-logo {{
@@ -152,19 +151,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .nav-right {{
             display: flex;
             align-items: center;
-            gap: 24px;
-        }}
-
-        .nav-link {{
-            color: var(--ink-charcoal);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: color 0.15s;
-        }}
-
-        .nav-link:hover {{
-            color: var(--brand-green);
+            gap: 20px;
         }}
 
         .nav-cta {{
@@ -183,11 +170,11 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(0.98);
         }}
 
-        /* 3. UBEREATS CUISINE PHOTO STRIP (BROUGHT BACK!) */
+        /* 3. UBEREATS CUISINE TOP STRIP */
         .cuisine-subbar {{
             background: #FFFFFF;
             border-bottom: 1px solid var(--border-light);
-            padding: 14px 40px;
+            padding: 12px 40px;
             overflow-x: auto;
             scrollbar-width: none;
         }}
@@ -197,7 +184,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .cuisine-strip {{
-            max-width: 1180px;
+            max-width: 1240px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -209,7 +196,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             text-decoration: none;
             color: var(--ink-charcoal);
@@ -219,7 +206,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .cuisine-pill:hover {{
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             color: var(--brand-green);
         }}
 
@@ -231,7 +218,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             border: 2px solid var(--border-light);
             background: #FAFAFA;
             transition: border-color 0.18s, transform 0.18s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
         }}
 
         .cuisine-pill:hover .thumb-round {{
@@ -252,43 +238,27 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             letter-spacing: -0.01em;
         }}
 
-        /* 4. HERO SECTION */
+        /* ==========================================================================
+           4. UBEREATS HERO (FULL-WIDTH CLEAN SEARCH HEADER)
+           ========================================================================== */
         .hero-banner {{
             background: #FFFFFF;
-            padding: 56px 40px 72px;
-            position: relative;
+            padding: 48px 40px 56px;
             border-bottom: 1px solid var(--border-light);
         }}
 
         .hero-wrap {{
-            max-width: 1180px;
+            max-width: 860px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 64px;
-            align-items: center;
-        }}
-
-        .hero-content {{
+            text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }}
-
-        .hero-badge {{
-            display: inline-flex;
             align-items: center;
-            padding: 6px 14px;
-            background: rgba(6, 193, 103, 0.1);
-            color: #038E4B;
-            border-radius: var(--radius-pill);
-            font-size: 13px;
-            font-weight: 700;
-            width: fit-content;
+            gap: 18px;
         }}
 
         .hero-title {{
-            font-size: 56px;
+            font-size: 52px;
             font-weight: 800;
             line-height: 1.05;
             letter-spacing: -0.04em;
@@ -305,15 +275,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             line-height: 1.5;
             color: var(--ink-muted);
             margin: 0;
-            max-width: 500px;
+            max-width: 600px;
         }}
 
-        /* Search Input */
         .search-container {{
+            width: 100%;
+            max-width: 760px;
             margin-top: 10px;
             background: var(--surface-white);
             border-radius: var(--radius-pill);
-            padding: 6px 6px 6px 20px;
+            padding: 6px 6px 6px 22px;
             border: 2px solid var(--ink-black);
             box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
             display: flex;
@@ -329,8 +300,8 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .search-icon-svg {{
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             stroke: var(--ink-charcoal);
             fill: none;
             stroke-width: 2.2;
@@ -358,7 +329,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             background: var(--brand-green);
             color: #FFFFFF;
             border: none;
-            padding: 16px 32px;
+            padding: 16px 34px;
             border-radius: var(--radius-pill);
             font-family: inherit;
             font-size: 16px;
@@ -366,9 +337,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             cursor: pointer;
             transition: all 0.15s ease;
             white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }}
 
         .cook-action-btn:hover {{
@@ -376,24 +344,20 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(0.98);
         }}
 
-        .cook-action-btn:active {{
-            transform: scale(0.95);
-        }}
-
         .quick-searches {{
             display: flex;
             align-items: center;
+            justify-content: center;
             flex-wrap: wrap;
             gap: 8px;
             font-size: 13px;
             color: var(--ink-muted);
-            margin-top: 6px;
         }}
 
         .quick-tag {{
             background: var(--surface-soft);
             color: var(--ink-charcoal);
-            padding: 5px 14px;
+            padding: 6px 14px;
             border-radius: var(--radius-pill);
             cursor: pointer;
             font-weight: 600;
@@ -405,101 +369,161 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             color: var(--ink-black);
         }}
 
-        /* Hero Right: Clean Hero Spotlight Platter */
-        .hero-visual-frame {{
-            position: relative;
+        /* ==========================================================================
+           5. TRUE UBEREATS FOOD CARD GRID (ASPECT RATIO + RATINGS + PROMO TAGS)
+           ========================================================================== */
+        .marketplace-feed {{
+            max-width: 1240px;
+            margin: 40px auto 0;
+            padding: 0 40px;
         }}
 
-        .hero-spotlight-card {{
+        .feed-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }}
+
+        .feed-title {{
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0;
+        }}
+
+        .feed-subtitle {{
+            font-size: 14px;
+            color: var(--ink-muted);
+            margin: 4px 0 0;
+        }}
+
+        /* UberEats 3-column / 4-column authentic card layout */
+        .uber-grid {{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }}
+
+        .uber-card {{
+            background: var(--surface-white);
             border-radius: var(--radius-card);
             overflow: hidden;
-            box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.18);
-            background: #E8E8E8;
-            aspect-ratio: 4 / 3.4;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+        }}
+
+        .uber-card:hover {{
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }}
+
+        /* 16:9 widescreen appetizing food imagery */
+        .uber-img-wrap {{
+            width: 100%;
+            aspect-ratio: 16 / 9.5;
             position: relative;
-            transition: transform 0.3s ease;
+            overflow: hidden;
+            background: #EFEFEF;
         }}
 
-        .hero-spotlight-card:hover {{
-            transform: scale(1.015);
-        }}
-
-        .hero-spotlight-card img {{
+        .uber-img-wrap img {{
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.35s ease;
         }}
 
-        .spotlight-glass-badge {{
+        .uber-card:hover .uber-img-wrap img {{
+            transform: scale(1.04);
+        }}
+
+        .uber-tag-promo {{
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 16px 20px;
-            border-radius: var(--radius-inner);
+            top: 12px;
+            left: 12px;
+            background: var(--brand-green);
+            color: #FFFFFF;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }}
+
+        .uber-badge-time {{
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: #FFFFFF;
+            color: var(--ink-black);
+            padding: 5px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }}
+
+        .uber-details {{
+            padding: 16px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }}
+
+        .uber-title-row {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }}
 
-        .spotlight-info h4 {{
-            margin: 0;
-            font-size: 16px;
+        .uber-dish-name {{
+            font-size: 17px;
             font-weight: 800;
             color: var(--ink-black);
+            margin: 0;
+            letter-spacing: -0.02em;
         }}
 
-        .spotlight-info p {{
-            margin: 2px 0 0;
-            font-size: 13px;
+        .uber-rating-badge {{
+            background: var(--surface-soft);
+            color: var(--ink-black);
+            font-size: 12.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }}
+
+        .uber-rating-badge span.star {{
+            color: #E29500;
+        }}
+
+        .uber-meta-row {{
+            font-size: 13.5px;
             color: var(--ink-muted);
-        }}
-
-        .spotlight-btn {{
-            background: var(--brand-green);
-            color: #FFFFFF;
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius-pill);
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.15s;
-        }}
-
-        .spotlight-btn:hover {{
-            background: var(--brand-green-hover);
-        }}
-
-        .floating-stat-chip {{
-            position: absolute;
-            top: -16px;
-            right: 24px;
-            background: #000000;
-            color: #FFFFFF;
-            padding: 10px 18px;
-            border-radius: var(--radius-pill);
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
             display: flex;
             align-items: center;
             gap: 8px;
         }}
 
-        .floating-stat-chip span.dot {{
-            width: 8px;
-            height: 8px;
+        .uber-dot {{
+            width: 3px;
+            height: 3px;
             border-radius: 50%;
-            background: var(--brand-green);
+            background: var(--ink-muted);
         }}
 
-        /* 5. RECIPE OUTPUT SECTION */
+        /* ==========================================================================
+           6. RECIPE OUTPUT SECTION
+           ========================================================================== */
         .recipe-section {{
             max-width: 900px;
             margin: 48px auto;
@@ -509,7 +533,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .recipe-card-brand {{
             background: var(--surface-white);
             border-radius: var(--radius-card);
-            box-shadow: var(--shadow-pop);
+            box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.12);
             overflow: hidden;
             border: 1px solid var(--border-light);
             animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -530,9 +554,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .recipe-header-badge {{
-            display: flex;
-            align-items: center;
-            gap: 8px;
             font-size: 13px;
             font-weight: 700;
             color: var(--brand-green);
@@ -591,7 +612,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            border-radius: var(--radius-inner);
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-light);
         }}
@@ -619,73 +640,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             margin-bottom: 12px;
         }}
 
-        /* 6. PERKS */
-        .perks-strip {{
-            background: var(--surface-white);
-            border-top: 1px solid var(--border-light);
-            border-bottom: 1px solid var(--border-light);
-            padding: 68px 40px;
-            margin-top: 60px;
-        }}
-
-        .perks-grid {{
-            max-width: 1180px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 48px;
-        }}
-
-        .perk-card {{
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }}
-
-        .perk-icon-svg {{
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            background: rgba(6, 193, 103, 0.12);
-            color: var(--brand-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }}
-
-        .perk-icon-svg svg {{
-            width: 24px;
-            height: 24px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }}
-
-        .perk-heading {{
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--ink-black);
-            margin: 0;
-        }}
-
-        .perk-text {{
-            font-size: 14.5px;
-            color: var(--ink-muted);
-            line-height: 1.5;
-            margin: 0;
-        }}
-
-        /* Footer */
+        /* 7. FOOTER */
         .brand-footer {{
             background: var(--ink-black);
             color: #FFFFFF;
             padding: 56px 40px 40px;
+            margin-top: 72px;
         }}
 
         .footer-inner {{
-            max-width: 1180px;
+            max-width: 1240px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -701,7 +665,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .footer-copy {{
-            max-width: 1180px;
+            max-width: 1240px;
             margin: 28px auto 0;
             font-size: 13px;
             color: rgba(255, 255, 255, 0.4);
@@ -709,12 +673,15 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             justify-content: space-between;
         }}
 
-        /* Responsive */
-        @media (max-width: 900px) {{
-            .hero-wrap {{ grid-template-columns: 1fr; gap: 40px; }}
-            .hero-title {{ font-size: 42px; }}
-            .perks-grid {{ grid-template-columns: 1fr; gap: 32px; }}
-            .nav-switchers, .nav-links {{ display: none; }}
+        @media (max-width: 960px) {{
+            .uber-grid {{ grid-template-columns: repeat(2, 1fr); }}
+            .hero-title {{ font-size: 40px; }}
+            .brand-nav, .cuisine-subbar, .marketplace-feed {{ padding-left: 20px; padding-right: 20px; }}
+            .nav-switchers {{ display: none; }}
+        }}
+
+        @media (max-width: 640px) {{
+            .uber-grid {{ grid-template-columns: 1fr; }}
         }}
     </style>
 </head>
@@ -739,12 +706,11 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
 
         <div class="nav-right">
-            <a href="#why-savor" class="nav-link">Why Savor</a>
-            <a href="#search-anchor" class="nav-cta">Cook Tonight</a>
+            <a href="#popular" class="nav-cta">Cook Tonight</a>
         </div>
     </nav>
 
-    <!-- 3. TOP CUISINE PHOTO STRIP (RESTORED!) -->
+    <!-- 3. UberEats-Style Round Cuisine Category Strip -->
     <div class="cuisine-subbar">
         <div class="cuisine-strip">
             <div class="cuisine-pill" onclick="quickOrder('Pizza Margherita')">
@@ -790,104 +756,180 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
     </div>
 
-    <!-- 4. Hero Section -->
+    <!-- 4. Focused Centered Hero (No awkward side photo) -->
     <header class="hero-banner">
         <div class="hero-wrap">
-            <div class="hero-content">
-                <div class="hero-badge">Curated Kitchen Intelligence</div>
-                <h1 class="hero-title">
-                    Order from your fridge.<br>
-                    Cook like a <span class="accent">pro.</span>
-                </h1>
-                <p class="hero-desc">
-                    Craving authentic tacos, creamy pasta, or buttery curry? Enter any dish name and Savor serves up the exact measurements, steps, and chef secrets.
-                </p>
+            <h1 class="hero-title">
+                Order from your fridge.<br>
+                Cook like a <span class="accent">pro.</span>
+            </h1>
+            <p class="hero-desc">
+                Enter any dish name. Savor immediately calculates exact measurements, restaurant techniques, and step-by-step instructions.
+            </p>
 
-                <!-- Search Input -->
-                <div id="search-anchor">
-                    <form method="post" action="/recipe" class="search-container">
-                        <svg class="search-icon-svg" viewBox="0 0 24 24">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <input 
-                            type="text" 
-                            name="dish" 
-                            id="dishInput" 
-                            class="search-field" 
-                            placeholder="What do you feel like eating? (e.g. Butter Chicken, Carbonara...)" 
-                            value="{dish_val}" 
-                            required 
-                            autocomplete="off"
-                            autofocus
-                        />
-                        <button type="submit" class="cook-action-btn">
-                            <span>Get Recipe</span>
-                            <span>→</span>
-                        </button>
-                    </form>
+            <form method="post" action="/recipe" class="search-container">
+                <svg class="search-icon-svg" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input 
+                    type="text" 
+                    name="dish" 
+                    id="dishInput" 
+                    class="search-field" 
+                    placeholder="What do you feel like eating? (e.g. Butter Chicken, Carbonara...)" 
+                    value="{dish_val}" 
+                    required 
+                    autocomplete="off"
+                    autofocus
+                />
+                <button type="submit" class="cook-action-btn">Get Recipe</button>
+            </form>
 
-                    <div class="quick-searches">
-                        <span>Popular:</span>
-                        <span class="quick-tag" onclick="quickOrder('Butter Chicken')">Butter Chicken</span>
-                        <span class="quick-tag" onclick="quickOrder('Pasta Carbonara')">Carbonara</span>
-                        <span class="quick-tag" onclick="quickOrder('Falafel Bowl')">Falafel Bowl</span>
-                        <span class="quick-tag" onclick="quickOrder('Fluffy Pancakes')">Pancakes</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hero Right Spotlight Platter -->
-            <div class="hero-visual-frame">
-                <div class="floating-stat-chip">
-                    <span class="dot"></span>
-                    <span>Chef Tested Daily</span>
-                </div>
-                <div class="hero-spotlight-card">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80" alt="Artisan Italian Pasta">
-                    <div class="spotlight-glass-badge">
-                        <div class="spotlight-info">
-                            <h4>Fresh Tagliatelle al Tartufo</h4>
-                            <p>Handmade pasta with shaved black truffle</p>
-                        </div>
-                        <button class="spotlight-btn" onclick="quickOrder('Tagliatelle al Tartufo')">Get Recipe</button>
-                    </div>
-                </div>
+            <div class="quick-searches">
+                <span>Popular:</span>
+                <span class="quick-tag" onclick="quickOrder('Butter Chicken')">Butter Chicken</span>
+                <span class="quick-tag" onclick="quickOrder('Pasta Carbonara')">Carbonara</span>
+                <span class="quick-tag" onclick="quickOrder('Falafel Bowl')">Falafel Bowl</span>
+                <span class="quick-tag" onclick="quickOrder('Fluffy Pancakes')">Pancakes</span>
+                <span class="quick-tag" onclick="quickOrder('Tacos al Pastor')">Tacos</span>
             </div>
         </div>
     </header>
 
-    <!-- 5. Recipe Output Anchor Area -->
+    <!-- 5. Real UberEats-Style Food Cards Feed (16:9 widescreen food photography) -->
+    <main class="marketplace-feed" id="popular">
+        <div class="feed-header">
+            <div>
+                <h2 class="feed-title">Popular Dishes to Cook Tonight</h2>
+                <p class="feed-subtitle">Select any dish card below to generate your custom chef recipe</p>
+            </div>
+        </div>
+
+        <div class="uber-grid">
+            <!-- Card 1 -->
+            <div class="uber-card" onclick="quickOrder('Butter Chicken with Garlic Naan')">
+                <div class="uber-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=800&q=80" alt="Butter Chicken">
+                    <div class="uber-tag-promo">Top Rated</div>
+                    <div class="uber-badge-time">35 min</div>
+                </div>
+                <div class="uber-details">
+                    <div class="uber-title-row">
+                        <h3 class="uber-dish-name">Murgh Makhani (Butter Chicken)</h3>
+                        <div class="uber-rating-badge"><span class="star">★</span> 4.9</div>
+                    </div>
+                    <div class="uber-meta-row">
+                        <span>North Indian</span>
+                        <span class="uber-dot"></span>
+                        <span>Rich Tomato & Fenugreek Gravy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="uber-card" onclick="quickOrder('Classic Roman Pasta Carbonara')">
+                <div class="uber-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=800&q=80" alt="Pasta Carbonara">
+                    <div class="uber-tag-promo">Chef Pick</div>
+                    <div class="uber-badge-time">20 min</div>
+                </div>
+                <div class="uber-details">
+                    <div class="uber-title-row">
+                        <h3 class="uber-dish-name">Authentic Pasta Carbonara</h3>
+                        <div class="uber-rating-badge"><span class="star">★</span> 4.8</div>
+                    </div>
+                    <div class="uber-meta-row">
+                        <span>Italian</span>
+                        <span class="uber-dot"></span>
+                        <span>Crispy Guanciale & Egg Yolks</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="uber-card" onclick="quickOrder('Crispy Double Smash Cheeseburger')">
+                <div class="uber-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80" alt="Smash Cheeseburger">
+                    <div class="uber-badge-time">15 min</div>
+                </div>
+                <div class="uber-details">
+                    <div class="uber-title-row">
+                        <h3 class="uber-dish-name">Double Smash Cheeseburger</h3>
+                        <div class="uber-rating-badge"><span class="star">★</span> 4.9</div>
+                    </div>
+                    <div class="uber-meta-row">
+                        <span>American</span>
+                        <span class="uber-dot"></span>
+                        <span>Lacy Crust, Secret Sauce</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="uber-card" onclick="quickOrder('Street-Style Tacos al Pastor')">
+                <div class="uber-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=800&q=80" alt="Tacos al Pastor">
+                    <div class="uber-badge-time">25 min</div>
+                </div>
+                <div class="uber-details">
+                    <div class="uber-title-row">
+                        <h3 class="uber-dish-name">Tacos al Pastor</h3>
+                        <div class="uber-rating-badge"><span class="star">★</span> 4.7</div>
+                    </div>
+                    <div class="uber-meta-row">
+                        <span>Mexican</span>
+                        <span class="uber-dot"></span>
+                        <span>Achiote Pork & Charred Pineapple</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="uber-card" onclick="quickOrder('Rich Tonkotsu Ramen with Chashu')">
+                <div class="uber-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80" alt="Tonkotsu Ramen">
+                    <div class="uber-tag-promo">Comfort Food</div>
+                    <div class="uber-badge-time">45 min</div>
+                </div>
+                <div class="uber-details">
+                    <div class="uber-title-row">
+                        <h3 class="uber-dish-name">Tonkotsu Ramen</h3>
+                        <div class="uber-rating-badge"><span class="star">★</span> 4.9</div>
+                    </div>
+                    <div class="uber-meta-row">
+                        <span>Japanese</span>
+                        <span class="uber-dot"></span>
+                        <span>Silky Pork Broth & Ajitsuke Tamago</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="uber-card" onclick="quickOrder('Artisan Woodfired Pizza Margherita')">
+                <div class="uber-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" alt="Pizza Margherita">
+                    <div class="uber-badge-time">20 min</div>
+                </div>
+                <div class="uber-details">
+                    <div class="uber-title-row">
+                        <h3 class="uber-dish-name">Neapolitan Pizza Margherita</h3>
+                        <div class="uber-rating-badge"><span class="star">★</span> 4.8</div>
+                    </div>
+                    <div class="uber-meta-row">
+                        <span>Italian</span>
+                        <span class="uber-dot"></span>
+                        <span>San Marzano & Fresh Fior di Latte</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 6. Recipe Output Anchor Area -->
     <div id="kitchen-pass" class="recipe-section">
         {recipe_content}
     </div>
-
-    <!-- 6. Perks / Why Savor -->
-    <section class="perks-strip" id="why-savor">
-        <div class="perks-grid">
-            <div class="perk-card">
-                <div class="perk-icon-svg">
-                    <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
-                <h3 class="perk-heading">Instant Generation</h3>
-                <p class="perk-text">Zero 2,000-word food blog preludes. Get pure ingredients and numbered steps in under 2 seconds.</p>
-            </div>
-            <div class="perk-card">
-                <div class="perk-icon-svg">
-                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                </div>
-                <h3 class="perk-heading">Tested Chef Tips</h3>
-                <p class="perk-text">Every recipe includes a restaurant-grade secret tip to guarantee balanced flavor and perfect texture.</p>
-            </div>
-            <div class="perk-card">
-                <div class="perk-icon-svg">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                </div>
-                <h3 class="perk-heading">Exact Mise En Place</h3>
-                <p class="perk-text">Clear ingredient ratios and timings calibrated so you never guess oven temperatures or pan heat again.</p>
-            </div>
-        </div>
-    </section>
 
     <!-- 7. Brand Footer -->
     <footer class="brand-footer">
