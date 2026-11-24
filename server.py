@@ -972,7 +972,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 <body>
     <!-- 1. Top Announcement Ticker -->
     <div class="top-banner">
-        <span class="promo-badge">PRO V2.5</span>
         <span>Generate calibrated chef recipes with exact gram measurements in seconds</span>
     </div>
 
