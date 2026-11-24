@@ -79,46 +79,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           1. TOP ANNOUNCEMENT BANNER
-           ========================================================================== */
-        .top-banner {{
-            background: #000000;
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 10px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            letter-spacing: -0.01em;
-            position: relative;
-            z-index: 101;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }}
-
-        .top-banner span.promo-badge {{
-            background: var(--brand-green);
-            color: #000000;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: var(--radius-pill);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }}
-
-        /* ==========================================================================
-           2. CINEMATIC OVERLAID NAVIGATION
+           1. CINEMATIC OVERLAID NAVIGATION
            ========================================================================== */
         .brand-nav {{
             position: absolute;
-            top: 38px;
+            top: 0;
             left: 0;
             right: 0;
             z-index: 100;
             background: transparent;
-            padding: 18px 48px;
+            padding: 24px 48px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -970,12 +940,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
     </style>
 </head>
 <body>
-    <!-- 1. Top Announcement Ticker -->
-    <div class="top-banner">
-        <span>Generate calibrated chef recipes with exact gram measurements in seconds</span>
-    </div>
-
-    <!-- 2. Cinematic Overlaid Brand Navigation Bar -->
+    <!-- 1. Cinematic Overlaid Brand Navigation Bar -->
     <nav class="brand-nav">
         <a href="/" class="brand-logo">
             Savor<span class="dot"></span>
