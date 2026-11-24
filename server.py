@@ -11,52 +11,40 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
 client = Groq(api_key=api_key) if api_key else None
-app = FastAPI(title="Savor - Scroll-Craft Culinary Studio")
+app = FastAPI(title="Savor - Taste the Moment")
 
 def render_page(dish_val: str = "", recipe_content: str = "") -> str:
-    # High-end Scroll-Craft architectural line art (Background Layer)
-    blueprint_grid = (
-        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E"
-        "%3Cg fill='none' stroke='%23C2410C' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' opacity='0.09'%3E"
-        "%3C!-- Chef Knife Blueprint --%3E"
-        "%3Cpath d='M20 30 L75 22 C88 22 98 32 98 42 L20 42 Z'/%3E%3Crect x='10' y='32' width='10' height='7' rx='1'/%3E"
-        "%3C!-- Whisk --%3E"
-        "%3Cpath d='M150 20 L175 45 M160 32 C172 20 185 32 172 45'/%3E"
-        "%3C!-- Cast Iron Skillet with measurements --%3E"
-        "%3Ccircle cx='50' cy='150' r='26'/%3E%3Cline x1='24' y1='150' x2='10' y2='150' stroke-width='2'/%3E"
-        "%3C!-- Plated Cloche / Bell --%3E"
-        "%3Cpath d='M135 160 C135 135 175 135 175 160 Z'/%3E%3Cline x1='128' y1='163' x2='182' y2='163'/%3E%3Ccircle cx='155' cy='132' r='3'/%3E"
-        "%3C!-- Drafting Crosshairs --%3E"
-        "%3Cpath d='M100 90 L100 110 M90 100 L110 100' stroke-width='0.8' opacity='0.6'/%3E"
-        "%3C/g%3E%3C/svg%3E"
-    )
+    # If recipe is generated, auto-scroll to recipe anchor
+    scroll_script = "<script>window.location.hash = 'kitchen-pass';</script>" if recipe_content else ""
 
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Savor — Dimensional Kitchen Pass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Savor — Good Food Made Effortless</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {{
-            --bg-base: #F4EFE6;
-            --ink-primary: #181614;
-            --ink-secondary: #524E48;
-            --ink-tertiary: #878177;
-            --border-crisp: #DDD7C9;
-            --accent-flame: #C2410C;
-            --accent-warm-tint: #FFF3EB;
-            --mono: 'JetBrains Mono', monospace;
-            --serif: 'Instrument Serif', Georgia, serif;
-            --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            
-            /* Dynamic Scroll & Mouse Parallax Variables */
-            --mouse-x: 0px;
-            --mouse-y: 0px;
-            --scroll-offset: 0px;
+            --brand-green: #06C167;        /* UberEats vibrant action green */
+            --brand-green-hover: #05A357;
+            --brand-coral: #FF5A36;
+            --brand-yellow: #FFC043;
+            --surface-white: #FFFFFF;
+            --surface-soft: #F6F6F6;
+            --surface-subtle: #EEEEEE;
+            --ink-black: #0F0F0F;
+            --ink-charcoal: #333333;
+            --ink-muted: #6E6E6E;
+            --ink-faint: #9E9E9E;
+            --border-light: rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.07);
+            --shadow-pop: 0 20px 48px -12px rgba(0, 0, 0, 0.12);
+            --radius-pill: 9999px;
+            --radius-card: 24px;
+            --radius-inner: 16px;
         }}
 
         * {{
@@ -67,535 +55,763 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         body {{
             margin: 0;
             padding: 0;
-            font-family: var(--sans);
-            background-color: var(--bg-base);
-            color: var(--ink-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--surface-soft);
+            color: var(--ink-black);
             -webkit-font-smoothing: antialiased;
-            position: relative;
+            overflow-x: hidden;
         }}
 
         /* ==========================================================================
-           SCROLL-CRAFT LAYER 1: DEEP ENVIRONMENTAL BACKGROUND PLANE
+           1. MODERN BRAND TOP NAVIGATION
            ========================================================================== */
-        .sc-plane-background {{
-            position: fixed;
-            inset: -40px;
-            z-index: 0;
-            pointer-events: none;
-            background-color: var(--bg-base);
-            background-image: 
-                radial-gradient(at 15% 10%, rgba(234, 88, 12, 0.15) 0px, transparent 50%),
-                radial-gradient(at 85% 15%, rgba(217, 119, 6, 0.14) 0px, transparent 45%),
-                radial-gradient(at 50% 95%, rgba(180, 83, 9, 0.12) 0px, transparent 65%),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
-                url("{blueprint_grid}");
-            background-repeat: repeat;
-            transform: translate3d(calc(var(--mouse-x) * -0.015), calc(var(--mouse-y) * -0.015), 0);
-            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform;
-        }}
-
-        /* Atmospheric Vignette */
-        .sc-plane-background::after {{
-            content: "";
-            position: absolute;
-            inset: 0;
-            box-shadow: inset 0 0 140px rgba(120, 53, 15, 0.09);
-        }}
-
-        /* ==========================================================================
-           SCROLL-CRAFT LAYER 2: INTERLEAVED ATMOSPHERIC STEAM & EMBERS
-           ========================================================================== */
-        .sc-plane-atmosphere {{
-            position: fixed;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }}
-
-        .steam-particle {{
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 243, 235, 0.1) 70%, transparent 100%);
-            filter: blur(14px);
-            opacity: 0.6;
-            animation: floatSteam 10s ease-in-out infinite alternate;
-        }}
-        .sp-1 {{ width: 220px; height: 220px; top: 8%; left: -40px; animation-duration: 9s; }}
-        .sp-2 {{ width: 260px; height: 260px; top: 22%; right: -60px; animation-duration: 12s; }}
-        .sp-3 {{ width: 200px; height: 200px; bottom: 15%; left: 10%; animation-duration: 11s; }}
-
-        @keyframes floatSteam {{
-            0% {{ transform: translateY(0px) scale(1) translate3d(calc(var(--mouse-x) * 0.03), calc(var(--mouse-y) * 0.03), 0); }}
-            100% {{ transform: translateY(-30px) scale(1.12) translate3d(calc(var(--mouse-x) * 0.06), calc(var(--mouse-y) * 0.06), 0); }}
-        }}
-
-        /* ==========================================================================
-           SCROLL-CRAFT LAYER 3: MIDGROUND SUBJECT STAGE (THE KITCHEN PASS)
-           ========================================================================== */
-        .sc-stage-container {{
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 690px;
-            margin: 0 auto;
-            padding: 48px 18px 96px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }}
-
-        /* Masthead */
-        .masthead {{
-            text-align: center;
-            padding-bottom: 8px;
-            transform: translate3d(calc(var(--mouse-x) * 0.008), calc(var(--mouse-y) * 0.008), 0);
-            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-        }}
-
-        .meta-pill {{
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--mono);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--accent-flame);
-            background: rgba(255, 255, 255, 0.88);
-            border: 1px solid rgba(194, 65, 12, 0.22);
+        .brand-nav {{
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            padding: 6px 16px;
-            border-radius: 999px;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 12px rgba(194, 65, 12, 0.06);
-        }}
-
-        .masthead h1 {{
-            font-family: var(--serif);
-            font-size: 56px;
-            font-weight: 400;
-            line-height: 1.05;
-            letter-spacing: -0.02em;
-            margin: 0 0 8px;
-            color: var(--ink-primary);
-        }}
-
-        .masthead h1 em {{
-            font-style: italic;
-            color: var(--accent-flame);
-        }}
-
-        .masthead p {{
-            font-size: 15.5px;
-            color: var(--ink-secondary);
-            margin: 0;
-            line-height: 1.5;
-        }}
-
-        /* The Working Surface (Interactive Search) */
-        .entry-box {{
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--border-crisp);
-            border-radius: 22px;
-            padding: 22px;
-            box-shadow: 
-                0 20px 42px -10px rgba(120, 53, 15, 0.09),
-                0 4px 12px rgba(0, 0, 0, 0.03);
-            transform: translate3d(calc(var(--mouse-x) * 0.012), calc(var(--mouse-y) * 0.012), 0);
-            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
-        }}
-
-        .entry-box:hover {{
-            box-shadow: 
-                0 24px 48px -8px rgba(120, 53, 15, 0.14),
-                0 6px 16px rgba(0, 0, 0, 0.04);
-        }}
-
-        form.dish-form {{
-            display: flex;
-            gap: 10px;
-        }}
-
-        .input-group {{
-            flex: 1;
-            position: relative;
+            border-bottom: 1px solid var(--border-light);
+            padding: 14px 28px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }}
 
-        .input-group input {{
-            width: 100%;
-            padding: 16px 20px;
-            font-family: var(--sans);
-            font-size: 16px;
-            color: var(--ink-primary);
-            background: #FAF8F5;
-            border: 1px solid var(--border-crisp);
-            border-radius: 14px;
-            outline: none;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        .brand-logo {{
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--ink-black);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
         }}
 
-        .input-group input:focus {{
-            background: #FFFFFF;
-            border-color: var(--ink-primary);
-            box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.1);
+        .brand-logo .dot {{
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--brand-green);
         }}
 
-        .input-group input::placeholder {{
-            color: var(--ink-tertiary);
-        }}
-
-        .cook-button {{
-            background: var(--ink-primary);
-            color: #FFFFFF;
-            border: none;
-            border-radius: 14px;
-            padding: 0 26px;
-            font-family: var(--sans);
-            font-size: 15px;
+        .nav-links {{
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 14px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            white-space: nowrap;
-            box-shadow: 0 4px 14px rgba(24, 22, 20, 0.16);
         }}
 
-        .cook-button:hover {{
-            background: var(--accent-flame);
+        .nav-link {{
+            color: var(--ink-charcoal);
+            text-decoration: none;
+            transition: color 0.15s;
+        }}
+
+        .nav-link:hover {{
+            color: var(--brand-green);
+        }}
+
+        .nav-cta {{
+            background: var(--ink-black);
+            color: #FFFFFF;
+            padding: 9px 18px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 700;
+            transition: transform 0.15s ease, background 0.15s;
+        }}
+
+        .nav-cta:hover {{
+            background: var(--brand-green);
             transform: scale(0.98);
         }}
 
-        .cook-button:active {{
+        /* ==========================================================================
+           2. VIBRANT HERO SECTION
+           ========================================================================== */
+        .hero-banner {{
+            background: var(--surface-white);
+            padding: 64px 24px 72px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-light);
+        }}
+
+        .hero-wrap {{
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 56px;
+            align-items: center;
+        }}
+
+        .hero-content {{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }}
+
+        .hero-badge {{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(6, 193, 103, 0.1);
+            color: #038E4B;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 700;
+            width: fit-content;
+        }}
+
+        .hero-title {{
+            font-size: 58px;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            color: var(--ink-black);
+            margin: 0;
+        }}
+
+        .hero-title span.accent {{
+            color: var(--brand-green);
+        }}
+
+        .hero-desc {{
+            font-size: 18px;
+            line-height: 1.5;
+            color: var(--ink-muted);
+            margin: 0;
+            max-width: 520px;
+        }}
+
+        /* UberEats-Style Massive Search Input */
+        .search-container {{
+            margin-top: 8px;
+            background: var(--surface-white);
+            border-radius: var(--radius-pill);
+            padding: 6px 6px 6px 20px;
+            border: 2px solid var(--ink-black);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }}
+
+        .search-container:focus-within {{
+            box-shadow: 0 20px 44px rgba(6, 193, 103, 0.2);
+            border-color: var(--brand-green);
+            transform: translateY(-2px);
+        }}
+
+        .search-icon {{
+            font-size: 22px;
+        }}
+
+        .search-field {{
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--ink-black);
+            background: transparent;
+        }}
+
+        .search-field::placeholder {{
+            color: var(--ink-faint);
+            font-weight: 500;
+        }}
+
+        .cook-action-btn {{
+            background: var(--brand-green);
+            color: #FFFFFF;
+            border: none;
+            padding: 16px 32px;
+            border-radius: var(--radius-pill);
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }}
+
+        .cook-action-btn:hover {{
+            background: var(--brand-green-hover);
+            transform: scale(0.98);
+        }}
+
+        .cook-action-btn:active {{
             transform: scale(0.95);
         }}
 
-        /* Catalog Strip */
-        .catalog-strip {{
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            padding-bottom: 2px;
+        /* Hero Food Mosaic Collage (UberEats Welcoming Imagery) */
+        .hero-mosaic {{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            position: relative;
         }}
 
-        .catalog-strip::-webkit-scrollbar {{
-            display: none;
+        .mosaic-card {{
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            background: #EEE;
+            aspect-ratio: 1;
+            transition: transform 0.25s ease, box-shadow 0.25s;
         }}
 
-        .catalog-tag {{
-            font-family: var(--mono);
+        .mosaic-card:hover {{
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-pop);
+        }}
+
+        .mosaic-card:nth-child(2) {{
+            transform: translateY(24px);
+        }}
+        .mosaic-card:nth-child(2):hover {{
+            transform: translateY(20px) scale(1.02);
+        }}
+
+        .mosaic-card img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }}
+
+        .mosaic-tag {{
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(15, 15, 15, 0.75);
+            backdrop-filter: blur(8px);
+            color: #FFF;
+            padding: 5px 12px;
+            border-radius: var(--radius-pill);
             font-size: 12px;
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid var(--border-crisp);
-            color: var(--ink-secondary);
-            padding: 6px 14px;
-            border-radius: 8px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }}
+
+        /* ==========================================================================
+           3. INSPIRATION CATEGORIES (UBEREATS VIBE CAROUSEL PILLS)
+           ========================================================================== */
+        .category-shelf {{
+            max-width: 1140px;
+            margin: 40px auto 0;
+            padding: 0 24px;
+        }}
+
+        .shelf-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 20px;
+        }}
+
+        .shelf-title {{
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0;
+        }}
+
+        .shelf-subtitle {{
+            font-size: 14px;
+            color: var(--ink-muted);
+            margin: 4px 0 0;
+        }}
+
+        .food-grid {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }}
+
+        .food-item-card {{
+            background: var(--surface-white);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
             cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.15s ease;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
         }}
 
-        .catalog-tag:hover {{
-            border-color: var(--accent-flame);
-            color: var(--accent-flame);
-            background: #FFFFFF;
-            transform: translateY(-1px);
+        .food-item-card:hover {{
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-pop);
+            border-color: rgba(6, 193, 103, 0.3);
         }}
 
-        /* Physical Restaurant Slip / Docket (Elevated Layer) */
-        .recipe-slip {{
-            background: #FFFFFF;
-            border: 1px solid var(--border-crisp);
-            border-radius: 22px;
-            box-shadow: 
-                0 30px 60px -15px rgba(120, 53, 15, 0.14),
-                0 6px 16px rgba(0, 0, 0, 0.04);
+        .food-item-card .thumb {{
+            width: 100%;
+            height: 160px;
             position: relative;
             overflow: hidden;
-            transform: translate3d(calc(var(--mouse-x) * 0.018), calc(var(--mouse-y) * 0.018), 0);
-            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-            animation: slipReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #FAFAF7;
         }}
 
-        @keyframes slipReveal {{
-            from {{ opacity: 0; transform: translateY(20px) scale(0.98); }}
+        .food-item-card .thumb img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }}
+
+        .food-item-card:hover .thumb img {{
+            transform: scale(1.06);
+        }}
+
+        .food-item-card .badge-time {{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #FFFFFF;
+            color: var(--ink-black);
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 11.5px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }}
+
+        .food-item-details {{
+            padding: 16px;
+        }}
+
+        .food-item-title {{
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--ink-black);
+            margin: 0 0 4px;
+        }}
+
+        .food-item-meta {{
+            font-size: 13px;
+            color: var(--ink-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }}
+
+        /* ==========================================================================
+           4. RECIPE GENERATION RESULT CONTAINER (KITCHEN PASS)
+           ========================================================================== */
+        .recipe-section {{
+            max-width: 860px;
+            margin: 48px auto;
+            padding: 0 24px;
+        }}
+
+        .recipe-card-brand {{
+            background: var(--surface-white);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-pop);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+            animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }}
+
+        @keyframes popIn {{
+            from {{ opacity: 0; transform: translateY(24px) scale(0.98); }}
             to {{ opacity: 1; transform: translateY(0) scale(1); }}
         }}
 
-        /* Perforated Top Bar */
-        .slip-header {{
-            background: #FAF8F4;
-            border-bottom: 1px dashed var(--border-crisp);
-            padding: 14px 28px;
+        .recipe-header-bar {{
+            background: var(--ink-black);
+            color: #FFFFFF;
+            padding: 18px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-family: var(--mono);
-            font-size: 11.5px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--ink-tertiary);
         }}
 
-        .action-chip {{
-            background: #FFFFFF;
-            border: 1px solid var(--border-crisp);
-            color: var(--ink-primary);
-            font-family: var(--mono);
-            font-size: 11px;
-            font-weight: 600;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }}
-
-        .action-chip:hover {{
-            border-color: var(--ink-primary);
-        }}
-
-        /* Main Slip Body */
-        .slip-content {{
-            padding: 36px 40px 48px;
-            font-size: 15.5px;
-            line-height: 1.7;
-            color: var(--ink-secondary);
-        }}
-
-        .slip-content h1 {{
-            font-family: var(--serif);
-            font-size: 38px;
-            font-weight: 400;
-            color: var(--ink-primary);
-            margin: 0 0 12px;
-            line-height: 1.15;
-            letter-spacing: -0.015em;
-        }}
-
-        .slip-content h2 {{
-            font-family: var(--mono);
+        .recipe-header-badge {{
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
+            color: var(--brand-green);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--ink-primary);
-            margin: 32px 0 14px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid var(--border-crisp);
+            letter-spacing: 0.05em;
         }}
 
-        .slip-content h3 {{
-            font-size: 17px;
-            color: var(--ink-primary);
-            margin: 20px 0 8px;
-        }}
-
-        .slip-content hr {{
+        .copy-btn-brand {{
+            background: rgba(255, 255, 255, 0.15);
+            color: #FFF;
             border: none;
-            border-top: 1px dashed var(--border-crisp);
+            padding: 7px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s;
+            font-family: inherit;
+        }}
+
+        .copy-btn-brand:hover {{
+            background: rgba(255, 255, 255, 0.3);
+        }}
+
+        .recipe-main-body {{
+            padding: 40px;
+            line-height: 1.7;
+            font-size: 16px;
+            color: var(--ink-charcoal);
+        }}
+
+        .recipe-main-body h1 {{
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin: 0 0 12px;
+            color: var(--ink-black);
+        }}
+
+        .recipe-main-body h2 {{
+            font-size: 20px;
+            font-weight: 800;
+            margin: 32px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--surface-soft);
+            color: var(--ink-black);
+        }}
+
+        .recipe-main-body hr {{
+            border: none;
+            border-top: 1px solid var(--surface-subtle);
             margin: 28px 0;
         }}
 
-        /* Table */
         table {{
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            font-size: 14px;
-            border: 1px solid var(--border-crisp);
-            border-radius: 10px;
+            border-radius: var(--radius-inner);
             overflow: hidden;
-            background: #FAF8F4;
+            border: 1px solid var(--border-light);
         }}
 
         th {{
-            background: #F1ECE1;
-            font-family: var(--mono);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--ink-primary);
-            padding: 12px 16px;
+            background: var(--surface-soft);
+            color: var(--ink-black);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 13px 18px;
             text-align: left;
-            border-bottom: 1px solid var(--border-crisp);
         }}
 
         td {{
-            padding: 13px 16px;
-            border-bottom: 1px solid #EAE4D8;
-            color: var(--ink-primary);
-            background: #FFFFFF;
+            padding: 14px 18px;
+            border-top: 1px solid var(--border-light);
+            font-size: 14.5px;
         }}
 
-        tr:last-child td {{
-            border-bottom: none;
-        }}
-
-        /* Instructions */
-        ol {{
-            padding-left: 20px;
-            margin: 14px 0;
+        ol, ul {{
+            padding-left: 24px;
         }}
 
         li {{
             margin-bottom: 12px;
-            color: var(--ink-secondary);
-        }}
-
-        li strong {{
-            color: var(--ink-primary);
-            font-weight: 600;
-        }}
-
-        /* Footer */
-        .studio-footer {{
-            text-align: center;
-            font-family: var(--mono);
-            font-size: 11px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--ink-tertiary);
-            padding: 24px 0;
         }}
 
         /* ==========================================================================
-           SCROLL-CRAFT LAYER 4: FLOATING FOREGROUND EMBERS & PARTICLES
+           5. BRAND PERKS (WHY SAVOR)
            ========================================================================== */
-        .sc-plane-foreground {{
-            position: fixed;
-            inset: 0;
-            z-index: 3;
-            pointer-events: none;
-            overflow: hidden;
+        .perks-strip {{
+            background: var(--surface-white);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            padding: 64px 24px;
+            margin-top: 72px;
         }}
 
-        .floating-accent {{
-            position: absolute;
-            font-size: 26px;
-            filter: drop-shadow(0 8px 16px rgba(194, 65, 12, 0.15));
-            opacity: 0.7;
-            user-select: none;
-            will-change: transform;
-            transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+        .perks-grid {{
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
         }}
-        .fa-1 {{ top: 18%; left: 8%; transform: translate3d(calc(var(--mouse-x) * 0.05), calc(var(--mouse-y) * 0.05), 0); }}
-        .fa-2 {{ top: 32%; right: 7%; transform: translate3d(calc(var(--mouse-x) * -0.04), calc(var(--mouse-y) * -0.04), 0); }}
-        .fa-3 {{ bottom: 25%; left: 6%; transform: translate3d(calc(var(--mouse-x) * 0.06), calc(var(--mouse-y) * 0.06), 0); }}
-        .fa-4 {{ bottom: 15%; right: 9%; transform: translate3d(calc(var(--mouse-x) * -0.05), calc(var(--mouse-y) * -0.05), 0); }}
+
+        .perk-card {{
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }}
+
+        .perk-icon {{
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: rgba(6, 193, 103, 0.12);
+            color: var(--brand-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }}
+
+        .perk-heading {{
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--ink-black);
+            margin: 0;
+        }}
+
+        .perk-text {{
+            font-size: 14.5px;
+            color: var(--ink-muted);
+            line-height: 1.5;
+            margin: 0;
+        }}
+
+        /* Footer */
+        .brand-footer {{
+            background: var(--ink-black);
+            color: #FFFFFF;
+            padding: 56px 24px 40px;
+        }}
+
+        .footer-inner {{
+            max-width: 1140px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 36px;
+        }}
+
+        .footer-brand {{
+            font-size: 26px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }}
+
+        .footer-copy {{
+            max-width: 1140px;
+            margin: 28px auto 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            justify-content: space-between;
+        }}
+
+        /* Responsive */
+        @media (max-width: 900px) {{
+            .hero-wrap {{ grid-template-columns: 1fr; gap: 40px; }}
+            .hero-title {{ font-size: 42px; }}
+            .food-grid {{ grid-template-columns: repeat(2, 1fr); }}
+            .perks-grid {{ grid-template-columns: 1fr; gap: 32px; }}
+            .nav-links {{ display: none; }}
+        }}
     </style>
 </head>
 <body>
-    <!-- Layer 1: Deep Environmental Background -->
-    <div class="sc-plane-background"></div>
+    <!-- Top Navigation -->
+    <nav class="brand-nav">
+        <a href="/" class="brand-logo">
+            Savor<span class="dot"></span>
+        </a>
+        <div class="nav-links">
+            <a href="#popular" class="nav-link">Popular</a>
+            <a href="#why-savor" class="nav-link">Why Savor</a>
+            <a href="#search-anchor" class="nav-link">Generate Recipe</a>
+        </div>
+        <a href="#search-anchor" class="nav-cta">Cook Tonight</a>
+    </nav>
 
-    <!-- Layer 2: Interleaved Atmospheric Steam Clouds -->
-    <div class="sc-plane-atmosphere">
-        <div class="steam-particle sp-1"></div>
-        <div class="steam-particle sp-2"></div>
-        <div class="steam-particle sp-3"></div>
-    </div>
+    <!-- Main Hero Banner -->
+    <header class="hero-banner">
+        <div class="hero-wrap">
+            <div class="hero-content">
+                <div class="hero-badge">✨ Craving something delicious?</div>
+                <h1 class="hero-title">
+                    Order from your fridge.<br>
+                    Cook like a <span class="accent">pro.</span>
+                </h1>
+                <p class="hero-desc">
+                    Craving authentic tacos, creamy pasta, or buttery curry? Enter any dish name and Savor serves up the exact measurements, steps, and chef secrets.
+                </p>
 
-    <!-- Layer 3: Midground Working Surface Stage -->
-    <main class="sc-stage-container">
-        <header class="masthead">
-            <div class="meta-pill">Recipe Docket — Table No. 01</div>
-            <h1>Savor <em>Studio</em></h1>
-            <p>Every dish has an architecture. Enter a dish name for your exact kitchen docket.</p>
-        </header>
-
-        <div class="entry-box">
-            <form method="post" action="/recipe" class="dish-form">
-                <div class="input-group">
-                    <input 
-                        type="text" 
-                        name="dish" 
-                        id="dishInput" 
-                        placeholder="Enter dish name (e.g. Cacio e Pepe, Tacos al Pastor...)" 
-                        value="{dish_val}" 
-                        required 
-                        autocomplete="off"
-                        autofocus
-                    />
+                <!-- UberEats Inspired Large Search Bar -->
+                <div id="search-anchor">
+                    <form method="post" action="/recipe" class="search-container">
+                        <span class="search-icon">🔍</span>
+                        <input 
+                            type="text" 
+                            name="dish" 
+                            id="dishInput" 
+                            class="search-field" 
+                            placeholder="What do you feel like eating? (e.g. Butter Chicken, Carbonara...)" 
+                            value="{dish_val}" 
+                            required 
+                            autocomplete="off"
+                            autofocus
+                        />
+                        <button type="submit" class="cook-action-btn">
+                            <span>Get Recipe</span>
+                            <span>→</span>
+                        </button>
+                    </form>
                 </div>
-                <button type="submit" class="cook-button">Order Recipe</button>
-            </form>
+            </div>
 
-            <div class="catalog-strip">
-                <span class="catalog-tag" onclick="orderDish('Cacio e Pepe')">Cacio e Pepe</span>
-                <span class="catalog-tag" onclick="orderDish('Chicken Tikka Masala')">Chicken Tikka Masala</span>
-                <span class="catalog-tag" onclick="orderDish('Crispy Smash Burger')">Smash Burger</span>
-                <span class="catalog-tag" onclick="orderDish('Japanese Tonkatsu')">Tonkatsu</span>
-                <span class="catalog-tag" onclick="orderDish('Classic French Omelette')">French Omelette</span>
+            <!-- Welcoming Food Mosaic -->
+            <div class="hero-mosaic">
+                <div class="mosaic-card">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Restaurant Dish">
+                    <div class="mosaic-tag">Pasta & Noodles</div>
+                </div>
+                <div class="mosaic-card">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" alt="Artisan Pizza">
+                    <div class="mosaic-tag">Woodfired Pizza</div>
+                </div>
+                <div class="mosaic-card">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Juicy Burger">
+                    <div class="mosaic-tag">Smash Burgers</div>
+                </div>
+                <div class="mosaic-card">
+                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=600&q=80" alt="Biryani Bowl">
+                    <div class="mosaic-tag">Aromatic Biryani</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Popular Dishes Shelf (UberEats Vibe Cards) -->
+    <section class="category-shelf" id="popular">
+        <div class="shelf-header">
+            <div>
+                <h2 class="shelf-title">Popular Cravings Today</h2>
+                <p class="shelf-subtitle">Click any dish below to generate your custom recipe in 3 seconds</p>
             </div>
         </div>
 
+        <div class="food-grid">
+            <div class="food-item-card" onclick="quickOrder('Butter Chicken with Garlic Naan')">
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80" alt="Butter Chicken">
+                    <div class="badge-time">⏱️ 35 min</div>
+                </div>
+                <div class="food-item-details">
+                    <h3 class="food-item-title">Butter Chicken</h3>
+                    <div class="food-item-meta">🍛 Rich & Creamy · North Indian</div>
+                </div>
+            </div>
+
+            <div class="food-item-card" onclick="quickOrder('Classic Roman Pasta Carbonara')">
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80" alt="Pasta Carbonara">
+                    <div class="badge-time">⏱️ 20 min</div>
+                </div>
+                <div class="food-item-details">
+                    <h3 class="food-item-title">Pasta Carbonara</h3>
+                    <div class="food-item-meta">🍝 Guanciale & Pecorino · Italian</div>
+                </div>
+            </div>
+
+            <div class="food-item-card" onclick="quickOrder('Crispy Double Cheeseburger')">
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="Cheeseburger">
+                    <div class="badge-time">⏱️ 15 min</div>
+                </div>
+                <div class="food-item-details">
+                    <h3 class="food-item-title">Smash Cheeseburger</h3>
+                    <div class="food-item-meta">🍔 Caramelized Edges · American</div>
+                </div>
+            </div>
+
+            <div class="food-item-card" onclick="quickOrder('Street-Style Tacos al Pastor')">
+                <div class="thumb">
+                    <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80" alt="Tacos">
+                    <div class="badge-time">⏱️ 25 min</div>
+                </div>
+                <div class="food-item-details">
+                    <h3 class="food-item-title">Tacos al Pastor</h3>
+                    <div class="food-item-meta">🌮 Spiced Pork & Pineapple · Mexican</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recipe Output Anchor Area -->
+    <div id="kitchen-pass" class="recipe-section">
         {recipe_content}
-
-        <footer class="studio-footer">
-            Savor Editorial Kitchen · Measured in Grams & Minutes
-        </footer>
-    </main>
-
-    <!-- Layer 4: Floating Foreground Embers & Culinary Accents -->
-    <div class="sc-plane-foreground">
-        <div class="floating-accent fa-1">🧂</div>
-        <div class="floating-accent fa-2">🌿</div>
-        <div class="floating-accent fa-3">🌶️</div>
-        <div class="floating-accent fa-4">🍋</div>
     </div>
 
+    <!-- Perks / Why Savor -->
+    <section class="perks-strip" id="why-savor">
+        <div class="perks-grid">
+            <div class="perk-card">
+                <div class="perk-icon">⚡</div>
+                <h3 class="perk-heading">Instant Generation</h3>
+                <p class="perk-text">Zero 2,000-word food blog preludes. Get pure ingredients and numbered steps in under 2 seconds.</p>
+            </div>
+            <div class="perk-card">
+                <div class="perk-icon">👨‍🍳</div>
+                <h3 class="perk-heading">Tested Chef Tips</h3>
+                <p class="perk-text">Every recipe includes a restaurant-grade secret tip to guarantee balanced flavor and perfect texture.</p>
+            </div>
+            <div class="perk-card">
+                <div class="perk-icon">⚖️</div>
+                <h3 class="perk-heading">Exact Mise En Place</h3>
+                <p class="perk-text">Clear ingredient ratios and timings calibrated so you never guess oven temperatures or pan heat again.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Footer -->
+    <footer class="brand-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">Savor.</div>
+            <div style="font-size: 14px; color: rgba(255,255,255,0.6);">Delicious food, made effortless for everyone.</div>
+        </div>
+        <div class="footer-copy">
+            <span>© 2026 Savor Kitchen Inc. All rights reserved.</span>
+            <span>Crafted for food lovers everywhere.</span>
+        </div>
+    </footer>
+
     <script>
-        // Scroll-Craft Multi-Plane Pointer & Scroll Physics Engine
-        let targetX = 0, targetY = 0;
-        let currentX = 0, currentY = 0;
-
-        window.addEventListener('mousemove', (e) => {{
-            const {{ innerWidth, innerHeight }} = window;
-            targetX = e.clientX - innerWidth / 2;
-            targetY = e.clientY - innerHeight / 2;
-        }});
-
-        function updateParallax() {{
-            // Smooth lerp (linear interpolation) for Apple/Scroll-Craft buttery feel
-            currentX += (targetX - currentX) * 0.08;
-            currentY += (targetY - currentY) * 0.08;
-
-            document.documentElement.style.setProperty('--mouse-x', `${{currentX.toFixed(2)}}px`);
-            document.documentElement.style.setProperty('--mouse-y', `${{currentY.toFixed(2)}}px`);
-
-            requestAnimationFrame(updateParallax);
-        }}
-        requestAnimationFrame(updateParallax);
-
-        function orderDish(name) {{
+        function quickOrder(dishName) {{
             const input = document.getElementById('dishInput');
-            input.value = name;
-            input.form.submit();
+            input.value = dishName;
+            document.querySelector('.search-container').submit();
         }}
 
-        function copySlip() {{
-            const content = document.querySelector('.slip-content');
-            if (content) {{
-                navigator.clipboard.writeText(content.innerText).then(() => {{
-                    const btn = document.getElementById('copyBtn');
+        function copyRecipeText() {{
+            const body = document.querySelector('.recipe-main-body');
+            if (body) {{
+                navigator.clipboard.writeText(body.innerText).then(() => {{
+                    const btn = document.getElementById('copyRecipeBtn');
                     if (btn) {{
-                        btn.innerHTML = '✓ Printed';
-                        setTimeout(() => {{ btn.innerHTML = 'Copy Slip'; }}, 2000);
+                        btn.innerHTML = '✓ Copied';
+                        setTimeout(() => {{ btn.innerHTML = '📋 Copy Recipe'; }}, 2000);
                     }}
                 }});
             }}
         }}
     </script>
+    {scroll_script}
 </body>
 </html>"""
 
@@ -611,14 +827,18 @@ def health():
 def get_recipe(dish: str = Form(...)):
     if not client:
         box = '''
-        <div class="recipe-slip">
-            <div class="slip-header">Notice</div>
-            <div class="slip-content" style="color: #C2410C;">GROQ_API_KEY environment variable is not configured.</div>
+        <div class="recipe-card-brand">
+            <div class="recipe-header-bar">
+                <div class="recipe-header-badge">⚠️ Notice</div>
+            </div>
+            <div class="recipe-main-body" style="color: #FF5A36;">
+                GROQ_API_KEY environment variable is not set.
+            </div>
         </div>
         '''
         return render_page(dish_val=dish, recipe_content=box)
         
-    prompt = f"Produce an exact, chef-grade kitchen docket for: {dish}"
+    prompt = f"Give me a mouthwatering, complete step-by-step recipe for: {dish}"
     try:
         response = client.chat.completions.create(
             model="openai/gpt-oss-120b",
@@ -626,14 +846,14 @@ def get_recipe(dish: str = Form(...)):
                 {
                     "role": "system",
                     "content": (
-                        "You are an executive chef at a world-class restaurant. When given a dish name, generate a concise, "
-                        "flawlessly measured recipe formatted in clean markdown like a physical kitchen docket. Avoid marketing fluff or generic adjectives.\n\n"
-                        "Format strictly:\n"
-                        "1. Dish Name (h1) with a one-sentence culinary summary\n"
-                        "2. Timing & Yield (markdown table: Prep Time, Cook Time, Total Time, Servings)\n"
-                        "3. Mise En Place / Ingredients (markdown table: Ingredient, Exact Quantity, Prep Notes)\n"
-                        "4. Method (Numbered chronological kitchen steps, clear and actionable)\n"
-                        "5. Chef's Critical Note (One technical pro tip that prevents common failures)"
+                        "You are a top restaurant chef. When given a dish name, create a vibrant, mouthwatering, "
+                        "and crystal-clear step-by-step recipe in clean markdown.\n\n"
+                        "Include:\n"
+                        "1. Dish Name (h1) with an appetizing 1-sentence intro\n"
+                        "2. Prep & Cook Times table (Prep Time, Cook Time, Total Time, Servings)\n"
+                        "3. Ingredients table (Ingredient, Measurement, Notes)\n"
+                        "4. Numbered step-by-step instructions\n"
+                        "5. Chef's Pro Secret Tip"
                     )
                 },
                 {"role": "user", "content": prompt}
@@ -643,19 +863,21 @@ def get_recipe(dish: str = Form(...)):
         recipe_md = response.choices[0].message.content
         html_recipe = md.render(recipe_md)
         box = f'''
-        <div class="recipe-slip">
-            <div class="slip-header">
-                <span>Docket #0829 · Kitchen Station</span>
-                <button class="action-chip" id="copyBtn" onclick="copySlip()">Copy Slip</button>
+        <div class="recipe-card-brand">
+            <div class="recipe-header-bar">
+                <div class="recipe-header-badge">✨ Your Custom Recipe</div>
+                <button class="copy-btn-brand" id="copyRecipeBtn" onclick="copyRecipeText()">📋 Copy Recipe</button>
             </div>
-            <div class="slip-content">{html_recipe}</div>
+            <div class="recipe-main-body">{html_recipe}</div>
         </div>
         '''
     except Exception as e:
         box = f'''
-        <div class="recipe-slip">
-            <div class="slip-header">Error</div>
-            <div class="slip-content" style="color: #C2410C;">Error: {e}</div>
+        <div class="recipe-card-brand">
+            <div class="recipe-header-bar">
+                <div class="recipe-header-badge">⚠️ Error</div>
+            </div>
+            <div class="recipe-main-body" style="color: #FF5A36;">Error: {e}</div>
         </div>
         '''
         
