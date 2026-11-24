@@ -11,370 +11,428 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
 client = Groq(api_key=api_key) if api_key else None
-app = FastAPI(title="SavorAI Recipe Generator")
+app = FastAPI(title="Savor - Culinary Assistant")
 
 def render_page(dish_val: str = "", recipe_content: str = "") -> str:
-    # Food background doodles as repeating SVG patterns
-    food_pattern = (
-        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E"
-        "%3Cg fill='none' stroke='%23e07a5f' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' opacity='0.22'%3E"
-        "%3C!-- Pizza Slice --%3E"
-        "%3Cpath d='M15 15 L35 22 L22 38 Z'/%3E%3Ccircle cx='23' cy='23' r='2' fill='%23e07a5f'/%3E"
-        "%3C!-- Burger --%3E"
-        "%3Cpath d='M75 18 Q88 10 101 18 L101 22 L75 22 Z'/%3E%3Cpath d='M73 24 Q88 27 103 24'/%3E%3Cpath d='M75 26 L101 26 Q88 34 75 26 Z'/%3E"
-        "%3C!-- Chef Hat --%3E"
-        "%3Cpath d='M20 75 Q15 65 25 60 Q32 50 40 60 Q48 55 50 68 L48 75 Z'/%3E%3Cline x1='20' y1='75' x2='48' y2='75'/%3E"
-        "%3C!-- Fork & Knife --%3E"
-        "%3Cpath d='M78 65 L78 88 M75 65 L75 73 Q75 76 78 76 Q81 76 81 73 L81 65'/%3E"
-        "%3Cpath d='M92 65 Q96 68 96 76 L96 88 M92 65 L92 88'/%3E"
-        "%3C!-- Bowl with Noodles & Chopsticks --%3E"
-        "%3Cpath d='M50 100 Q65 118 80 100 Z'/%3E%3Cpath d='M48 100 Q65 96 82 100'/%3E%3Cline x1='45' y1='90' x2='85' y2='108'/%3E"
-        "%3C!-- Carrot --%3E"
-        "%3Cpath d='M10 105 L22 93 Q25 96 22 99 Z'/%3E%3Cpath d='M22 93 L26 89 M23 95 L28 94'/%3E"
-        "%3C/g%3E%3C/svg%3E"
-    )
-
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍳 SavorAI - Recipe Kitchen</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Savor — Recipe Studio</title>
     <style>
-        * {{ box-sizing: border-box; }}
+        :root {{
+            --bg-color: #000000;
+            --surface-bg: rgba(28, 28, 30, 0.72);
+            --surface-border: rgba(255, 255, 255, 0.12);
+            --surface-hover: rgba(44, 44, 46, 0.85);
+            --pill-bg: rgba(255, 255, 255, 0.08);
+            --pill-border: rgba(255, 255, 255, 0.12);
+            --text-primary: #FFFFFF;
+            --text-secondary: #8E8E93;
+            --text-tertiary: #636366;
+            --ios-blue: #007AFF;
+            --ios-accent: #FF9F0A;
+            --radius-lg: 28px;
+            --radius-md: 18px;
+            --radius-sm: 12px;
+        }}
+
+        * {{
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }}
+
         body {{
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #fef9f3;
-            background-image: url("{food_pattern}");
-            background-repeat: repeat;
-            color: #2b2320;
             margin: 0;
-            padding: 30px 16px;
+            padding: 40px 16px 80px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 10% 20%, rgba(255, 159, 10, 0.14) 0px, transparent 50%),
+                radial-gradient(at 90% 10%, rgba(0, 122, 255, 0.14) 0px, transparent 50%),
+                radial-gradient(at 50% 80%, rgba(175, 82, 222, 0.12) 0px, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-primary);
             min-height: 100vh;
-            position: relative;
+            display: flex;
+            justify-content: center;
+            letter-spacing: -0.015em;
+            -webkit-font-smoothing: antialiased;
         }}
 
-        /* Floating food emojis scattered across the canvas */
-        .food-doodle {{
-            position: fixed;
-            font-size: 38px;
-            opacity: 0.35;
-            user-select: none;
-            pointer-events: none;
-            animation: floatSlow 7s ease-in-out infinite alternate;
-            z-index: 0;
-        }}
-        .d1 {{ top: 40px; left: 35px; animation-duration: 6s; }}
-        .d2 {{ top: 120px; right: 50px; animation-duration: 8s; }}
-        .d3 {{ bottom: 120px; left: 45px; animation-duration: 7s; }}
-        .d4 {{ bottom: 80px; right: 60px; animation-duration: 9s; }}
-        .d5 {{ top: 48%; left: 15px; animation-duration: 6.5s; }}
-        .d6 {{ top: 42%; right: 25px; animation-duration: 7.5s; }}
-
-        @keyframes floatSlow {{
-            0% {{ transform: translateY(0px) rotate(0deg); }}
-            100% {{ transform: translateY(-16px) rotate(8deg); }}
+        .app-container {{
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }}
 
-        .wrapper {{
-            position: relative;
-            z-index: 1;
-            max-width: 820px;
-            margin: 0 auto;
-        }}
-
+        /* Header / Navigation Bar */
         .header {{
             text-align: center;
-            margin-bottom: 24px;
+            padding: 24px 0 10px;
         }}
 
-        .logo-tag {{
+        .brand-badge {{
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: #ffe3d1;
-            color: #d9480f;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--pill-bg);
+            border: 1px solid var(--surface-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
             text-transform: uppercase;
-            border: 2px dashed #f76707;
-            margin-bottom: 12px;
+            letter-spacing: 0.06em;
+            margin-bottom: 14px;
         }}
 
-        h1 {{
+        .title {{
             font-size: 42px;
-            font-weight: 800;
-            color: #1e130c;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }}
-
-        h1 span.script {{
-            font-family: 'Caveat', cursive;
-            color: #d9480f;
-            font-size: 50px;
             font-weight: 700;
+            letter-spacing: -0.035em;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
         }}
 
-        p.subtitle {{
-            color: #795548;
+        .subtitle {{
             font-size: 16px;
-            margin: 8px 0 0;
-            font-weight: 500;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.45;
         }}
 
-        /* Main Card */
-        .card {{
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(10px);
-            border: 3px solid #f6d8c8;
-            border-radius: 24px;
-            padding: 32px 36px;
-            box-shadow: 0 16px 40px rgba(186, 74, 30, 0.08), 0 2px 8px rgba(0,0,0,0.03);
+        /* iOS Glass Search Card */
+        .glass-card {{
+            background: var(--surface-bg);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+        }}
+
+        form.search-form {{
+            display: flex;
+            gap: 10px;
             position: relative;
         }}
 
-        .card::before {{
-            content: '🍕  🍔  🍜  🌮  🥗  🍣  🥞  🥑  🍩';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #fff;
-            padding: 2px 18px;
-            border-radius: 20px;
-            border: 2px solid #f6d8c8;
-            font-size: 15px;
-            letter-spacing: 4px;
-        }}
-
-        /* Search Form */
-        form {{
-            display: flex;
-            gap: 12px;
-            margin-top: 14px;
-            margin-bottom: 20px;
-        }}
-
-        .input-group {{
+        .search-field {{
             flex: 1;
             position: relative;
+            display: flex;
+            align-items: center;
         }}
 
-        .input-group input {{
-            width: 100%;
-            padding: 16px 20px 16px 48px;
-            font-size: 17px;
-            font-family: inherit;
-            border: 2px solid #e9ecef;
-            border-radius: 14px;
-            outline: none;
-            background: #fff;
-            color: #2b2320;
-            transition: all 0.2s ease;
-        }}
-
-        .input-group input:focus {{
-            border-color: #d9480f;
-            box-shadow: 0 0 0 4px rgba(217, 72, 15, 0.12);
-        }}
-
-        .input-icon {{
+        .search-icon {{
             position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
+            left: 18px;
+            width: 18px;
+            height: 18px;
+            color: var(--text-secondary);
             pointer-events: none;
         }}
 
-        button.cook-btn {{
-            padding: 16px 30px;
-            background: linear-gradient(135deg, #f76707 0%, #d9480f 100%);
-            color: #fff;
-            font-size: 17px;
-            font-weight: 700;
+        .search-input {{
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 15px 18px 15px 46px;
+            font-size: 16px;
             font-family: inherit;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }}
+
+        .search-input::placeholder {{
+            color: var(--text-tertiary);
+        }}
+
+        .search-input:focus {{
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.24);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06);
+        }}
+
+        .submit-btn {{
+            background: #FFFFFF;
+            color: #000000;
             border: none;
-            border-radius: 14px;
+            border-radius: 18px;
+            padding: 0 24px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 6px 18px rgba(217, 72, 15, 0.3);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            white-space: nowrap;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }}
 
-        button.cook-btn:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(217, 72, 15, 0.4);
+        .submit-btn:hover {{
+            background: #E5E5EA;
+            transform: scale(0.98);
         }}
 
-        /* Quick Inspiration Badges */
-        .quick-tags {{
+        .submit-btn:active {{
+            transform: scale(0.95);
+        }}
+
+        /* Segmented / Suggestion Pills */
+        .suggestions-row {{
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             gap: 8px;
-            margin-bottom: 24px;
+            margin-top: 14px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 2px;
+        }}
+
+        .suggestions-row::-webkit-scrollbar {{
+            display: none;
+        }}
+
+        .suggestion-chip {{
+            padding: 7px 14px;
+            background: var(--pill-bg);
+            border: 1px solid var(--pill-border);
+            border-radius: 999px;
+            color: var(--text-secondary);
             font-size: 13px;
-            color: #8c6b5e;
-        }}
-        .tag-pill {{
-            background: #fff3ec;
-            color: #c92a2a;
-            border: 1px solid #ffd8a8;
-            padding: 4px 12px;
-            border-radius: 20px;
+            font-weight: 500;
             cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.15s;
-        }}
-        .tag-pill:hover {{
-            background: #ffe3d1;
-            transform: scale(1.04);
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            user-select: none;
         }}
 
-        /* Recipe Box */
-        .recipe-box {{
-            border-top: 2px dashed #f6d8c8;
-            padding-top: 28px;
-            margin-top: 10px;
-            line-height: 1.7;
+        .suggestion-chip:hover {{
+            background: rgba(255, 255, 255, 0.16);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.24);
         }}
 
-        .recipe-box h1, .recipe-box h2, .recipe-box h3 {{
-            color: #1e130c;
-            margin-top: 24px;
+        .suggestion-chip:active {{
+            transform: scale(0.96);
+        }}
+
+        /* Recipe Result Container */
+        .recipe-wrapper {{
+            background: var(--surface-bg);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border: 1px solid var(--surface-border);
+            border-radius: var(--radius-lg);
+            padding: 32px 36px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }}
+
+        @keyframes fadeIn {{
+            from {{ opacity: 0; transform: translateY(12px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+
+        /* Recipe Typography & Markdown Styling */
+        .recipe-content {{
+            line-height: 1.65;
+            color: #E5E5EA;
+            font-size: 15px;
+        }}
+
+        .recipe-content h1, 
+        .recipe-content h2, 
+        .recipe-content h3 {{
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+            margin-top: 26px;
             margin-bottom: 12px;
-            font-weight: 700;
         }}
 
-        .recipe-box h2 {{
-            border-bottom: 2px solid #ffe3d1;
+        .recipe-content h2 {{
+            font-size: 20px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--surface-border);
             padding-bottom: 8px;
-            font-size: 24px;
         }}
 
-        .recipe-box hr {{
+        .recipe-content p {{
+            margin: 10px 0;
+            color: #D1D1D6;
+        }}
+
+        .recipe-content hr {{
             border: none;
-            border-top: 1px dashed #ffd8a8;
+            border-top: 1px solid var(--surface-border);
             margin: 24px 0;
         }}
 
-        /* Ingredients Table */
+        /* Modern iOS Inset Table */
         table {{
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 20px 0;
-            border-radius: 12px;
+            border-collapse: collapse;
+            margin: 18px 0;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: var(--radius-md);
             overflow: hidden;
-            border: 1px solid #ffd8a8;
+            border: 1px solid var(--surface-border);
         }}
 
         th {{
-            background: #ffe3d1;
-            color: #a61e4d;
-            font-weight: 700;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
             padding: 12px 16px;
             text-align: left;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--surface-border);
         }}
 
         td {{
-            padding: 12px 16px;
-            border-top: 1px solid #fff0e6;
-            background: #fffcf9;
-            font-size: 15px;
+            padding: 13px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            font-size: 14px;
         }}
 
-        tr:nth-child(even) td {{
-            background: #fff8f3;
+        tr:last-child td {{
+            border-bottom: none;
         }}
 
+        /* Lists */
         ol, ul {{
-            padding-left: 24px;
+            padding-left: 20px;
+            margin: 14px 0;
         }}
 
         li {{
             margin-bottom: 10px;
+            color: #E5E5EA;
         }}
 
         strong {{
-            color: #c92a2a;
+            color: #FFFFFF;
+            font-weight: 600;
+        }}
+
+        /* Action Bar */
+        .action-bar {{
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }}
+
+        .icon-btn {{
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--surface-border);
+            color: var(--text-secondary);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }}
+
+        .icon-btn:hover {{
+            background: rgba(255, 255, 255, 0.14);
+            color: var(--text-primary);
         }}
 
         /* Footer */
         .footer {{
             text-align: center;
-            margin-top: 24px;
-            color: #9c7b6d;
+            padding: 16px;
             font-size: 13px;
-            font-weight: 500;
+            color: var(--text-tertiary);
         }}
     </style>
 </head>
 <body>
-    <!-- Floating food emojis around canvas -->
-    <div class="food-doodle d1">🍕</div>
-    <div class="food-doodle d2">🥑</div>
-    <div class="food-doodle d3">🍔</div>
-    <div class="food-doodle d4">🍜</div>
-    <div class="food-doodle d5">🌮</div>
-    <div class="food-doodle d6">🍣</div>
+    <div class="app-container">
+        <header class="header">
+            <div class="brand-badge">Recipe Studio</div>
+            <h1 class="title">Savor</h1>
+            <p class="subtitle">Enter any dish to generate a clean, step-by-step culinary guide.</p>
+        </header>
 
-    <div class="wrapper">
-        <div class="header">
-            <div class="logo-tag">✨ Chef's Secret Recipe Book</div>
-            <h1>🍳 Savor<span class="script">Kitchen</span></h1>
-            <p class="subtitle">Type any dish name below — we'll whip up your personalized recipe in seconds!</p>
-        </div>
-
-        <div class="card">
-            <form method="post" action="/recipe">
-                <div class="input-group">
-                    <span class="input-icon">🍽️</span>
-                    <input type="text" name="dish" id="dishInput" placeholder="e.g., Paneer Butter Masala, Creamy Carbonara, Tacos..." value="{dish_val}" required autofocus />
+        <div class="glass-card">
+            <form method="post" action="/recipe" class="search-form">
+                <div class="search-field">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input 
+                        type="text" 
+                        name="dish" 
+                        id="dishInput" 
+                        class="search-input" 
+                        placeholder="Search or enter a dish..." 
+                        value="{dish_val}" 
+                        required 
+                        autocomplete="off"
+                        autofocus
+                    />
                 </div>
-                <button type="submit" class="cook-btn">👨‍🍳 Cook It!</button>
+                <button type="submit" class="submit-btn">Generate</button>
             </form>
 
-            <div class="quick-tags">
-                <span>💡 Quick picks:</span>
-                <span class="tag-pill" onclick="pickDish('Butter Chicken')">🍗 Butter Chicken</span>
-                <span class="tag-pill" onclick="pickDish('Pasta Carbonara')">🍝 Pasta Carbonara</span>
-                <span class="tag-pill" onclick="pickDish('Crispy Falafel Bowl')">🧆 Crispy Falafel</span>
-                <span class="tag-pill" onclick="pickDish('Classic Fluffy Pancakes')">🥞 Fluffy Pancakes</span>
-                <span class="tag-pill" onclick="pickDish('Biryani')">🍚 Dum Biryani</span>
+            <div class="suggestions-row">
+                <span class="suggestion-chip" onclick="quickFill('Butter Chicken')">Butter Chicken</span>
+                <span class="suggestion-chip" onclick="quickFill('Pasta Carbonara')">Pasta Carbonara</span>
+                <span class="suggestion-chip" onclick="quickFill('Crispy Falafel Bowl')">Falafel Bowl</span>
+                <span class="suggestion-chip" onclick="quickFill('Fluffy Pancakes')">Fluffy Pancakes</span>
+                <span class="suggestion-chip" onclick="quickFill('Guacamole & Chips')">Fresh Guacamole</span>
             </div>
-
-            {recipe_content}
         </div>
 
-        <div class="footer">
-            🥖 🧀 🍓 Handcrafted with love for foodies & home chefs everywhere 🌶️ 🍋 🧄
-        </div>
+        {recipe_content}
+
+        <footer class="footer">
+            Designed with SF Pro & Dark Glass Aesthetics
+        </footer>
     </div>
 
     <script>
-        function pickDish(name) {{
+        function quickFill(name) {{
             const input = document.getElementById('dishInput');
             input.value = name;
             input.form.submit();
+        }}
+
+        function copyRecipe() {{
+            const content = document.querySelector('.recipe-content');
+            if (content) {{
+                navigator.clipboard.writeText(content.innerText).then(() => {{
+                    const btn = document.getElementById('copyBtn');
+                    if (btn) {{
+                        btn.innerHTML = '✓ Copied';
+                        setTimeout(() => {{ btn.innerHTML = 'Copy'; }}, 2000);
+                    }}
+                }});
+            }}
         }}
     </script>
 </body>
@@ -391,10 +449,14 @@ def health():
 @app.post("/recipe", response_class=HTMLResponse)
 def get_recipe(dish: str = Form(...)):
     if not client:
-        box = '<div class="recipe-box" style="color: red;">⚠️ Error: GROQ_API_KEY environment variable is not set in Vercel settings.</div>'
+        box = '''
+        <div class="recipe-wrapper" style="border-color: rgba(255, 69, 58, 0.4);">
+            <div style="color: #FF453A; font-weight: 500;">Configuration Notice: GROQ_API_KEY environment variable is not set.</div>
+        </div>
+        '''
         return render_page(dish_val=dish, recipe_content=box)
         
-    prompt = f"Give me a complete recipe for: {dish}"
+    prompt = f"Give me a complete, refined recipe for: {dish}"
     try:
         response = client.chat.completions.create(
             model="openai/gpt-oss-120b",
@@ -402,13 +464,13 @@ def get_recipe(dish: str = Form(...)):
                 {
                     "role": "system",
                     "content": (
-                        "You are a fun, friendly professional chef. When given a dish name, generate a clear, "
-                        "easy-to-follow recipe formatted in markdown. Include:\n"
-                        "1. Dish Name & brief mouthwatering description with emojis\n"
-                        "2. Prep Time, Cook Time, and Servings (in a markdown table)\n"
+                        "You are an expert executive chef. When given a dish name, generate an elegant, "
+                        "concise, and beautifully structured recipe formatted in clean markdown. Include:\n"
+                        "1. Dish Name & brief description\n"
+                        "2. Prep Time, Cook Time, and Servings (in a clean markdown table)\n"
                         "3. Ingredients list with measurements (in a markdown table)\n"
                         "4. Step-by-step numbered cooking instructions\n"
-                        "5. A pro chef secret tip"
+                        "5. Chef's Secret Tip"
                     )
                 },
                 {"role": "user", "content": prompt}
@@ -417,9 +479,20 @@ def get_recipe(dish: str = Form(...)):
         )
         recipe_md = response.choices[0].message.content
         html_recipe = md.render(recipe_md)
-        box = f'<div class="recipe-box">{html_recipe}</div>'
+        box = f'''
+        <div class="recipe-wrapper">
+            <div class="action-bar">
+                <button class="icon-btn" id="copyBtn" onclick="copyRecipe()">Copy Recipe</button>
+            </div>
+            <div class="recipe-content">{html_recipe}</div>
+        </div>
+        '''
     except Exception as e:
-        box = f'<div class="recipe-box" style="color: red;">⚠️ Error: {e}</div>'
+        box = f'''
+        <div class="recipe-wrapper" style="border-color: rgba(255, 69, 58, 0.4);">
+            <div style="color: #FF453A;">Error: {e}</div>
+        </div>
+        '''
         
     return render_page(dish_val=dish, recipe_content=box)
 
