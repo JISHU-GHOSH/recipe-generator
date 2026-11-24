@@ -11,23 +11,23 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
 client = Groq(api_key=api_key) if api_key else None
-app = FastAPI(title="Savor - Editorial Culinary Studio")
+app = FastAPI(title="Savor - Scroll-Craft Culinary Studio")
 
 def render_page(dish_val: str = "", recipe_content: str = "") -> str:
-    # High-end Taste-Skill culinary blueprint watermark pattern
+    # High-end Scroll-Craft architectural line art (Background Layer)
     blueprint_grid = (
-        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E"
-        "%3Cg fill='none' stroke='%23C2410C' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'%3E"
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E"
+        "%3Cg fill='none' stroke='%23C2410C' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' opacity='0.09'%3E"
         "%3C!-- Chef Knife Blueprint --%3E"
-        "%3Cpath d='M20 30 L65 24 C75 24 85 32 85 40 L20 40 Z'/%3E%3Crect x='10' y='32' width='10' height='6' rx='1'/%3E"
+        "%3Cpath d='M20 30 L75 22 C88 22 98 32 98 42 L20 42 Z'/%3E%3Crect x='10' y='32' width='10' height='7' rx='1'/%3E"
         "%3C!-- Whisk --%3E"
-        "%3Cpath d='M135 20 L155 40 M145 30 C155 20 165 30 155 40'/%3E"
-        "%3C!-- Cast Iron Skillet with measurement ticks --%3E"
-        "%3Ccircle cx='45' cy='135' r='22'/%3E%3Cline x1='23' y1='135' x2='10' y2='135' stroke-width='2'/%3E"
+        "%3Cpath d='M150 20 L175 45 M160 32 C172 20 185 32 172 45'/%3E"
+        "%3C!-- Cast Iron Skillet with measurements --%3E"
+        "%3Ccircle cx='50' cy='150' r='26'/%3E%3Cline x1='24' y1='150' x2='10' y2='150' stroke-width='2'/%3E"
         "%3C!-- Plated Cloche / Bell --%3E"
-        "%3Cpath d='M120 145 C120 125 155 125 155 145 Z'/%3E%3Cline x1='115' y1='147' x2='160' y2='147'/%3E%3Ccircle cx='137.5' cy='123' r='2.5'/%3E"
-        "%3C!-- Subtle Drafting Grid Crosses --%3E"
-        "%3Cpath d='M90 85 L90 95 M85 90 L95 90' stroke-width='0.8' opacity='0.5'/%3E"
+        "%3Cpath d='M135 160 C135 135 175 135 175 160 Z'/%3E%3Cline x1='128' y1='163' x2='182' y2='163'/%3E%3Ccircle cx='155' cy='132' r='3'/%3E"
+        "%3C!-- Drafting Crosshairs --%3E"
+        "%3Cpath d='M100 90 L100 110 M90 100 L110 100' stroke-width='0.8' opacity='0.6'/%3E"
         "%3C/g%3E%3C/svg%3E"
     )
 
@@ -36,7 +36,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Savor — Kitchen Studio & Recipe Card</title>
+    <title>Savor — Dimensional Kitchen Pass</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -46,13 +46,17 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             --ink-primary: #181614;
             --ink-secondary: #524E48;
             --ink-tertiary: #878177;
-            --card-paper: #FFFFFF;
             --border-crisp: #DDD7C9;
             --accent-flame: #C2410C;
             --accent-warm-tint: #FFF3EB;
             --mono: 'JetBrains Mono', monospace;
             --serif: 'Instrument Serif', Georgia, serif;
             --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Dynamic Scroll & Mouse Parallax Variables */
+            --mouse-x: 0px;
+            --mouse-y: 0px;
+            --scroll-offset: 0px;
         }}
 
         * {{
@@ -62,50 +66,94 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         body {{
             margin: 0;
-            padding: 44px 16px 88px;
+            padding: 0;
             font-family: var(--sans);
             background-color: var(--bg-base);
-            /* Multi-layer atmospheric culinary lighting + blueprint watermark */
-            background-image: 
-                radial-gradient(at 15% 10%, rgba(234, 88, 12, 0.12) 0px, transparent 45%),
-                radial-gradient(at 85% 15%, rgba(217, 119, 6, 0.10) 0px, transparent 40%),
-                radial-gradient(at 50% 95%, rgba(180, 83, 9, 0.08) 0px, transparent 60%),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
-                url("{blueprint_grid}");
-            background-repeat: repeat;
-            background-attachment: fixed;
             color: var(--ink-primary);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             position: relative;
         }}
 
-        /* Subtle Ambient Culinary Vignette Border */
-        body::before {{
-            content: "";
+        /* ==========================================================================
+           SCROLL-CRAFT LAYER 1: DEEP ENVIRONMENTAL BACKGROUND PLANE
+           ========================================================================== */
+        .sc-plane-background {{
             position: fixed;
-            inset: 0;
-            box-shadow: inset 0 0 120px rgba(120, 53, 15, 0.07);
-            pointer-events: none;
+            inset: -40px;
             z-index: 0;
+            pointer-events: none;
+            background-color: var(--bg-base);
+            background-image: 
+                radial-gradient(at 15% 10%, rgba(234, 88, 12, 0.15) 0px, transparent 50%),
+                radial-gradient(at 85% 15%, rgba(217, 119, 6, 0.14) 0px, transparent 45%),
+                radial-gradient(at 50% 95%, rgba(180, 83, 9, 0.12) 0px, transparent 65%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+                url("{blueprint_grid}");
+            background-repeat: repeat;
+            transform: translate3d(calc(var(--mouse-x) * -0.015), calc(var(--mouse-y) * -0.015), 0);
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
         }}
 
-        .studio-layout {{
+        /* Atmospheric Vignette */
+        .sc-plane-background::after {{
+            content: "";
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 140px rgba(120, 53, 15, 0.09);
+        }}
+
+        /* ==========================================================================
+           SCROLL-CRAFT LAYER 2: INTERLEAVED ATMOSPHERIC STEAM & EMBERS
+           ========================================================================== */
+        .sc-plane-atmosphere {{
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }}
+
+        .steam-particle {{
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 0%, rgba(255, 243, 235, 0.1) 70%, transparent 100%);
+            filter: blur(14px);
+            opacity: 0.6;
+            animation: floatSteam 10s ease-in-out infinite alternate;
+        }}
+        .sp-1 {{ width: 220px; height: 220px; top: 8%; left: -40px; animation-duration: 9s; }}
+        .sp-2 {{ width: 260px; height: 260px; top: 22%; right: -60px; animation-duration: 12s; }}
+        .sp-3 {{ width: 200px; height: 200px; bottom: 15%; left: 10%; animation-duration: 11s; }}
+
+        @keyframes floatSteam {{
+            0% {{ transform: translateY(0px) scale(1) translate3d(calc(var(--mouse-x) * 0.03), calc(var(--mouse-y) * 0.03), 0); }}
+            100% {{ transform: translateY(-30px) scale(1.12) translate3d(calc(var(--mouse-x) * 0.06), calc(var(--mouse-y) * 0.06), 0); }}
+        }}
+
+        /* ==========================================================================
+           SCROLL-CRAFT LAYER 3: MIDGROUND SUBJECT STAGE (THE KITCHEN PASS)
+           ========================================================================== */
+        .sc-stage-container {{
+            position: relative;
+            z-index: 2;
             width: 100%;
             max-width: 690px;
+            margin: 0 auto;
+            padding: 48px 18px 96px;
             display: flex;
             flex-direction: column;
             gap: 24px;
-            position: relative;
-            z-index: 1;
         }}
 
-        /* Editorial Header */
+        /* Masthead */
         .masthead {{
             text-align: center;
             padding-bottom: 8px;
+            transform: translate3d(calc(var(--mouse-x) * 0.008), calc(var(--mouse-y) * 0.008), 0);
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
         }}
 
         .meta-pill {{
@@ -117,25 +165,24 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             text-transform: uppercase;
             letter-spacing: 0.12em;
             color: var(--accent-flame);
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.88);
             border: 1px solid rgba(194, 65, 12, 0.22);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 6px 15px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 6px 16px;
             border-radius: 999px;
             margin-bottom: 14px;
-            box-shadow: 0 2px 8px rgba(194, 65, 12, 0.05);
+            box-shadow: 0 4px 12px rgba(194, 65, 12, 0.06);
         }}
 
         .masthead h1 {{
             font-family: var(--serif);
-            font-size: 54px;
+            font-size: 56px;
             font-weight: 400;
             line-height: 1.05;
             letter-spacing: -0.02em;
             margin: 0 0 8px;
             color: var(--ink-primary);
-            text-shadow: 0 2px 16px rgba(255, 255, 255, 0.6);
         }}
 
         .masthead h1 em {{
@@ -150,17 +197,25 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             line-height: 1.5;
         }}
 
-        /* Clean Search Bar with Glass Elevation */
+        /* The Working Surface (Interactive Search) */
         .entry-box {{
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border-crisp);
             border-radius: 22px;
-            padding: 20px;
+            padding: 22px;
             box-shadow: 
-                0 16px 36px -10px rgba(120, 53, 15, 0.08),
-                0 2px 6px rgba(0, 0, 0, 0.02);
+                0 20px 42px -10px rgba(120, 53, 15, 0.09),
+                0 4px 12px rgba(0, 0, 0, 0.03);
+            transform: translate3d(calc(var(--mouse-x) * 0.012), calc(var(--mouse-y) * 0.012), 0);
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+        }}
+
+        .entry-box:hover {{
+            box-shadow: 
+                0 24px 48px -8px rgba(120, 53, 15, 0.14),
+                0 6px 16px rgba(0, 0, 0, 0.04);
         }}
 
         form.dish-form {{
@@ -177,7 +232,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         .input-group input {{
             width: 100%;
-            padding: 15px 18px;
+            padding: 16px 20px;
             font-family: var(--sans);
             font-size: 16px;
             color: var(--ink-primary);
@@ -191,7 +246,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .input-group input:focus {{
             background: #FFFFFF;
             border-color: var(--ink-primary);
-            box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.08);
+            box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.1);
         }}
 
         .input-group input::placeholder {{
@@ -203,14 +258,14 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             color: #FFFFFF;
             border: none;
             border-radius: 14px;
-            padding: 0 24px;
+            padding: 0 26px;
             font-family: var(--sans);
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s ease;
             white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(24, 22, 20, 0.15);
+            box-shadow: 0 4px 14px rgba(24, 22, 20, 0.16);
         }}
 
         .cook-button:hover {{
@@ -222,12 +277,12 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(0.95);
         }}
 
-        /* Editorial Quick Picks */
+        /* Catalog Strip */
         .catalog-strip {{
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 14px;
+            margin-top: 15px;
             overflow-x: auto;
             scrollbar-width: none;
             padding-bottom: 2px;
@@ -240,10 +295,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .catalog-tag {{
             font-family: var(--mono);
             font-size: 12px;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.85);
             border: 1px solid var(--border-crisp);
             color: var(--ink-secondary);
-            padding: 6px 13px;
+            padding: 6px 14px;
             border-radius: 8px;
             cursor: pointer;
             white-space: nowrap;
@@ -257,29 +312,31 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: translateY(-1px);
         }}
 
-        /* Physical Restaurant Slip / Docket */
+        /* Physical Restaurant Slip / Docket (Elevated Layer) */
         .recipe-slip {{
             background: #FFFFFF;
             border: 1px solid var(--border-crisp);
             border-radius: 22px;
             box-shadow: 
-                0 24px 48px -12px rgba(120, 53, 15, 0.12),
-                0 4px 12px rgba(0, 0, 0, 0.03);
+                0 30px 60px -15px rgba(120, 53, 15, 0.14),
+                0 6px 16px rgba(0, 0, 0, 0.04);
             position: relative;
             overflow: hidden;
-            animation: slipIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translate3d(calc(var(--mouse-x) * 0.018), calc(var(--mouse-y) * 0.018), 0);
+            transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slipReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }}
 
-        @keyframes slipIn {{
-            from {{ opacity: 0; transform: translateY(14px); }}
-            to {{ opacity: 1; transform: translateY(0); }}
+        @keyframes slipReveal {{
+            from {{ opacity: 0; transform: translateY(20px) scale(0.98); }}
+            to {{ opacity: 1; transform: translateY(0) scale(1); }}
         }}
 
-        /* Perforated top bar */
+        /* Perforated Top Bar */
         .slip-header {{
             background: #FAF8F4;
             border-bottom: 1px dashed var(--border-crisp);
-            padding: 14px 26px;
+            padding: 14px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -309,7 +366,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         /* Main Slip Body */
         .slip-content {{
-            padding: 34px 38px 44px;
+            padding: 36px 40px 48px;
             font-size: 15.5px;
             line-height: 1.7;
             color: var(--ink-secondary);
@@ -317,7 +374,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         .slip-content h1 {{
             font-family: var(--serif);
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 400;
             color: var(--ink-primary);
             margin: 0 0 12px;
@@ -332,7 +389,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: var(--ink-primary);
-            margin: 30px 0 12px;
+            margin: 32px 0 14px;
             padding-bottom: 6px;
             border-bottom: 1px solid var(--border-crisp);
         }}
@@ -349,7 +406,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             margin: 28px 0;
         }}
 
-        /* Structured Spec Table */
+        /* Table */
         table {{
             width: 100%;
             border-collapse: collapse;
@@ -368,7 +425,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--ink-primary);
-            padding: 11px 16px;
+            padding: 12px 16px;
             text-align: left;
             border-bottom: 1px solid var(--border-crisp);
         }}
@@ -384,7 +441,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             border-bottom: none;
         }}
 
-        /* Step instructions */
+        /* Instructions */
         ol {{
             padding-left: 20px;
             margin: 14px 0;
@@ -408,12 +465,48 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--ink-tertiary);
-            padding: 16px 0;
+            padding: 24px 0;
         }}
+
+        /* ==========================================================================
+           SCROLL-CRAFT LAYER 4: FLOATING FOREGROUND EMBERS & PARTICLES
+           ========================================================================== */
+        .sc-plane-foreground {{
+            position: fixed;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            overflow: hidden;
+        }}
+
+        .floating-accent {{
+            position: absolute;
+            font-size: 26px;
+            filter: drop-shadow(0 8px 16px rgba(194, 65, 12, 0.15));
+            opacity: 0.7;
+            user-select: none;
+            will-change: transform;
+            transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+        }}
+        .fa-1 {{ top: 18%; left: 8%; transform: translate3d(calc(var(--mouse-x) * 0.05), calc(var(--mouse-y) * 0.05), 0); }}
+        .fa-2 {{ top: 32%; right: 7%; transform: translate3d(calc(var(--mouse-x) * -0.04), calc(var(--mouse-y) * -0.04), 0); }}
+        .fa-3 {{ bottom: 25%; left: 6%; transform: translate3d(calc(var(--mouse-x) * 0.06), calc(var(--mouse-y) * 0.06), 0); }}
+        .fa-4 {{ bottom: 15%; right: 9%; transform: translate3d(calc(var(--mouse-x) * -0.05), calc(var(--mouse-y) * -0.05), 0); }}
     </style>
 </head>
 <body>
-    <div class="studio-layout">
+    <!-- Layer 1: Deep Environmental Background -->
+    <div class="sc-plane-background"></div>
+
+    <!-- Layer 2: Interleaved Atmospheric Steam Clouds -->
+    <div class="sc-plane-atmosphere">
+        <div class="steam-particle sp-1"></div>
+        <div class="steam-particle sp-2"></div>
+        <div class="steam-particle sp-3"></div>
+    </div>
+
+    <!-- Layer 3: Midground Working Surface Stage -->
+    <main class="sc-stage-container">
         <header class="masthead">
             <div class="meta-pill">Recipe Docket — Table No. 01</div>
             <h1>Savor <em>Studio</em></h1>
@@ -451,9 +544,39 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         <footer class="studio-footer">
             Savor Editorial Kitchen · Measured in Grams & Minutes
         </footer>
+    </main>
+
+    <!-- Layer 4: Floating Foreground Embers & Culinary Accents -->
+    <div class="sc-plane-foreground">
+        <div class="floating-accent fa-1">🧂</div>
+        <div class="floating-accent fa-2">🌿</div>
+        <div class="floating-accent fa-3">🌶️</div>
+        <div class="floating-accent fa-4">🍋</div>
     </div>
 
     <script>
+        // Scroll-Craft Multi-Plane Pointer & Scroll Physics Engine
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+
+        window.addEventListener('mousemove', (e) => {{
+            const {{ innerWidth, innerHeight }} = window;
+            targetX = e.clientX - innerWidth / 2;
+            targetY = e.clientY - innerHeight / 2;
+        }});
+
+        function updateParallax() {{
+            // Smooth lerp (linear interpolation) for Apple/Scroll-Craft buttery feel
+            currentX += (targetX - currentX) * 0.08;
+            currentY += (targetY - currentY) * 0.08;
+
+            document.documentElement.style.setProperty('--mouse-x', `${{currentX.toFixed(2)}}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${{currentY.toFixed(2)}}px`);
+
+            requestAnimationFrame(updateParallax);
+        }}
+        requestAnimationFrame(updateParallax);
+
         function orderDish(name) {{
             const input = document.getElementById('dishInput');
             input.value = name;
