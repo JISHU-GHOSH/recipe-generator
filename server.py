@@ -40,7 +40,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.06);
             --shadow-pop: 0 24px 48px -12px rgba(0, 0, 0, 0.10);
             --radius-pill: 9999px;
-            --radius-card: 24px;
+            --radius-card: 22px;
             --radius-inner: 16px;
         }}
 
@@ -59,9 +59,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             overflow-x: hidden;
         }}
 
-        /* ==========================================================================
-           1. TOP ANNOUNCEMENT BANNER
-           ========================================================================== */
+        /* 1. TOP ANNOUNCEMENT BANNER */
         .top-banner {{
             background: #000000;
             color: #FFFFFF;
@@ -85,9 +83,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             text-transform: uppercase;
         }}
 
-        /* ==========================================================================
-           2. BRAND NAVIGATION BAR
-           ========================================================================== */
+        /* 2. BRAND NAVIGATION BAR */
         .brand-nav {{
             position: sticky;
             top: 0;
@@ -187,18 +183,85 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(0.98);
         }}
 
-        /* ==========================================================================
-           3. HERO SECTION (FOCUSED & SPACIOUS LAYOUT)
-           ========================================================================== */
+        /* 3. UBEREATS CUISINE PHOTO STRIP (BROUGHT BACK!) */
+        .cuisine-subbar {{
+            background: #FFFFFF;
+            border-bottom: 1px solid var(--border-light);
+            padding: 14px 40px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }}
+
+        .cuisine-subbar::-webkit-scrollbar {{
+            display: none;
+        }}
+
+        .cuisine-strip {{
+            max-width: 1180px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }}
+
+        .cuisine-pill {{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--ink-charcoal);
+            padding: 4px;
+            transition: all 0.18s ease;
+            white-space: nowrap;
+        }}
+
+        .cuisine-pill:hover {{
+            transform: translateY(-3px);
+            color: var(--brand-green);
+        }}
+
+        .cuisine-pill .thumb-round {{
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border-light);
+            background: #FAFAFA;
+            transition: border-color 0.18s, transform 0.18s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+        }}
+
+        .cuisine-pill:hover .thumb-round {{
+            border-color: var(--brand-green);
+            transform: scale(1.05);
+        }}
+
+        .cuisine-pill .thumb-round img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }}
+
+        .cuisine-pill .label {{
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }}
+
+        /* 4. HERO SECTION */
         .hero-banner {{
             background: #FFFFFF;
-            padding: 64px 32px 76px;
+            padding: 56px 40px 72px;
             position: relative;
             border-bottom: 1px solid var(--border-light);
         }}
 
         .hero-wrap {{
-            max-width: 1140px;
+            max-width: 1180px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
@@ -245,7 +308,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             max-width: 500px;
         }}
 
-        /* Large Search Input */
+        /* Search Input */
         .search-container {{
             margin-top: 10px;
             background: var(--surface-white);
@@ -342,7 +405,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             color: var(--ink-black);
         }}
 
-        /* Hero Right: Clean, High-Impact Featured Platter (Replaced Cluttered 4-Grid) */
+        /* Hero Right: Clean Hero Spotlight Platter */
         .hero-visual-frame {{
             position: relative;
         }}
@@ -368,13 +431,12 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             display: block;
         }}
 
-        /* Floating Overlays for Editorial Depth */
         .spotlight-glass-badge {{
             position: absolute;
             bottom: 20px;
             left: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             padding: 16px 20px;
@@ -414,7 +476,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             background: var(--brand-green-hover);
         }}
 
-        /* Floating Stat Chip */
         .floating-stat-chip {{
             position: absolute;
             top: -16px;
@@ -438,9 +499,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             background: var(--brand-green);
         }}
 
-        /* ==========================================================================
-           4. RECIPE OUTPUT SECTION (ANCHOR)
-           ========================================================================== */
+        /* 5. RECIPE OUTPUT SECTION */
         .recipe-section {{
             max-width: 900px;
             margin: 48px auto;
@@ -560,19 +619,17 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             margin-bottom: 12px;
         }}
 
-        /* ==========================================================================
-           5. BRAND PERKS (WHY SAVOR)
-           ========================================================================== */
+        /* 6. PERKS */
         .perks-strip {{
             background: var(--surface-white);
             border-top: 1px solid var(--border-light);
             border-bottom: 1px solid var(--border-light);
-            padding: 68px 32px;
+            padding: 68px 40px;
             margin-top: 60px;
         }}
 
         .perks-grid {{
-            max-width: 1140px;
+            max-width: 1180px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -624,11 +681,11 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .brand-footer {{
             background: var(--ink-black);
             color: #FFFFFF;
-            padding: 56px 32px 40px;
+            padding: 56px 40px 40px;
         }}
 
         .footer-inner {{
-            max-width: 1140px;
+            max-width: 1180px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -644,7 +701,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .footer-copy {{
-            max-width: 1140px;
+            max-width: 1180px;
             margin: 28px auto 0;
             font-size: 13px;
             color: rgba(255, 255, 255, 0.4);
@@ -687,7 +744,53 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
     </nav>
 
-    <!-- 3. Hero Section (Clean, Uncluttered Editorial Layout) -->
+    <!-- 3. TOP CUISINE PHOTO STRIP (RESTORED!) -->
+    <div class="cuisine-subbar">
+        <div class="cuisine-strip">
+            <div class="cuisine-pill" onclick="quickOrder('Pizza Margherita')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=120&q=80" alt="Pizza"></div>
+                <span class="label">Pizza</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Smash Cheeseburger')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=120&q=80" alt="Burgers"></div>
+                <span class="label">Burgers</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Pasta Carbonara')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=120&q=80" alt="Italian"></div>
+                <span class="label">Italian</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Chicken Biryani')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=120&q=80" alt="Indian"></div>
+                <span class="label">Indian</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Street Tacos')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=120&q=80" alt="Mexican"></div>
+                <span class="label">Mexican</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Tonkotsu Ramen')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=120&q=80" alt="Ramen"></div>
+                <span class="label">Ramen</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Salmon Sushi Roll')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=120&q=80" alt="Japanese"></div>
+                <span class="label">Japanese</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Mediterranean Salad')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=120&q=80" alt="Healthy"></div>
+                <span class="label">Healthy</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Fluffy Blueberry Pancakes')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=120&q=80" alt="Breakfast"></div>
+                <span class="label">Breakfast</span>
+            </div>
+            <div class="cuisine-pill" onclick="quickOrder('Chocolate Glazed Donut')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1527515862127-a4fc05baf7a5?auto=format&fit=crop&w=120&q=80" alt="Desserts"></div>
+                <span class="label">Desserts</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Hero Section -->
     <header class="hero-banner">
         <div class="hero-wrap">
             <div class="hero-content">
@@ -734,7 +837,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
                 </div>
             </div>
 
-            <!-- Single Clean Editorial Hero Platter (Replaced Cluttered Multiple Images) -->
+            <!-- Hero Right Spotlight Platter -->
             <div class="hero-visual-frame">
                 <div class="floating-stat-chip">
                     <span class="dot"></span>
@@ -754,12 +857,12 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
     </header>
 
-    <!-- Recipe Output Anchor Area -->
+    <!-- 5. Recipe Output Anchor Area -->
     <div id="kitchen-pass" class="recipe-section">
         {recipe_content}
     </div>
 
-    <!-- Perks / Why Savor -->
+    <!-- 6. Perks / Why Savor -->
     <section class="perks-strip" id="why-savor">
         <div class="perks-grid">
             <div class="perk-card">
@@ -786,7 +889,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
     </section>
 
-    <!-- Brand Footer -->
+    <!-- 7. Brand Footer -->
     <footer class="brand-footer">
         <div class="footer-inner">
             <div class="footer-brand">Savor.</div>
