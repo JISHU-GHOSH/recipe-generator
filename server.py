@@ -11,31 +11,52 @@ load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
 client = Groq(api_key=api_key) if api_key else None
-app = FastAPI(title="Savor - Culinary Assistant")
+app = FastAPI(title="Savor - iOS Food Studio")
 
 def render_page(dish_val: str = "", recipe_content: str = "") -> str:
+    # High-end iOS food pattern with warm culinary line art
+    ios_food_pattern = (
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E"
+        "%3Cg fill='none' stroke='%23ea580c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' opacity='0.16'%3E"
+        "%3C!-- Chef Hat --%3E"
+        "%3Cpath d='M25 45 C15 35 25 22 36 26 C42 16 58 16 64 26 C75 22 85 35 75 45 Z'/%3E"
+        "%3Cpath d='M28 45 L72 45 L69 52 L31 52 Z'/%3E"
+        "%3C!-- Pizza Slice --%3E"
+        "%3Cpath d='M115 25 L145 35 L125 60 Z'/%3E%3Ccircle cx='126' cy='36' r='2' fill='%23ea580c'/%3E"
+        "%3C!-- Croissant / Bakery --%3E"
+        "%3Cpath d='M35 110 C25 125 45 145 65 135 C75 128 55 105 35 110 Z'/%3E"
+        "%3C!-- Ramen Bowl & Steam --%3E"
+        "%3Cpath d='M105 125 C105 145 135 145 135 125 Z'/%3E%3Cpath d='M102 125 L138 125'/%3E"
+        "%3Cpath d='M112 115 Q115 110 112 105 M120 116 Q123 111 120 106 M128 115 Q131 110 128 105'/%3E"
+        "%3C!-- Avocado --%3E"
+        "%3Cpath d='M90 75 C82 62 70 70 70 85 C70 98 88 98 88 85 Z'/%3E%3Ccircle cx='79' cy='84' r='4'/%3E"
+        "%3C/g%3E%3C/svg%3E"
+    )
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Savor — Recipe Studio</title>
+    <title>Savor — Kitchen Studio</title>
     <style>
         :root {{
-            --bg-color: #000000;
-            --surface-bg: rgba(28, 28, 30, 0.72);
-            --surface-border: rgba(255, 255, 255, 0.12);
-            --surface-hover: rgba(44, 44, 46, 0.85);
-            --pill-bg: rgba(255, 255, 255, 0.08);
-            --pill-border: rgba(255, 255, 255, 0.12);
-            --text-primary: #FFFFFF;
-            --text-secondary: #8E8E93;
-            --text-tertiary: #636366;
-            --ios-blue: #007AFF;
-            --ios-accent: #FF9F0A;
-            --radius-lg: 28px;
-            --radius-md: 18px;
-            --radius-sm: 12px;
+            --bg-canvas: #FFFBF7;
+            --surface-glass: rgba(255, 255, 255, 0.82);
+            --surface-border: rgba(234, 88, 12, 0.16);
+            --surface-shadow: 0 20px 48px -12px rgba(194, 65, 12, 0.12), 0 8px 24px -6px rgba(0, 0, 0, 0.04);
+            
+            --ios-coral: #FF5A36;
+            --ios-orange: #FF8A00;
+            --ios-peach: #FFF0E6;
+            --ios-dark: #1F1916;
+            --ios-subtext: #7C6E65;
+            --ios-pill-bg: rgba(255, 255, 255, 0.7);
+            
+            --radius-xl: 32px;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-pill: 9999px;
         }}
 
         * {{
@@ -45,319 +66,358 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         body {{
             margin: 0;
-            padding: 40px 16px 80px;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
-            background-color: var(--bg-color);
+            padding: 32px 18px 80px;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", -system-ui, sans-serif;
+            background-color: var(--bg-canvas);
             background-image: 
-                radial-gradient(at 10% 20%, rgba(255, 159, 10, 0.14) 0px, transparent 50%),
-                radial-gradient(at 90% 10%, rgba(0, 122, 255, 0.14) 0px, transparent 50%),
-                radial-gradient(at 50% 80%, rgba(175, 82, 222, 0.12) 0px, transparent 60%);
+                radial-gradient(at 15% 15%, rgba(255, 138, 0, 0.12) 0px, transparent 55%),
+                radial-gradient(at 85% 10%, rgba(255, 90, 54, 0.14) 0px, transparent 50%),
+                radial-gradient(at 50% 90%, rgba(255, 214, 170, 0.25) 0px, transparent 65%),
+                url("{ios_food_pattern}");
+            background-repeat: repeat;
             background-attachment: fixed;
-            color: var(--text-primary);
+            color: var(--ios-dark);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             letter-spacing: -0.015em;
             -webkit-font-smoothing: antialiased;
+            position: relative;
         }}
 
-        .app-container {{
+        /* Subtle iOS Floating Food Elements */
+        .ios-doodle {{
+            position: fixed;
+            font-size: 32px;
+            opacity: 0.65;
+            filter: drop-shadow(0 6px 12px rgba(255, 90, 54, 0.15));
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+            animation: floatEmoji 6s ease-in-out infinite alternate;
+        }}
+        .d-1 {{ top: 38px; left: 32px; animation-duration: 5.5s; }}
+        .d-2 {{ top: 120px; right: 36px; animation-duration: 7s; }}
+        .d-3 {{ bottom: 100px; left: 40px; animation-duration: 6.5s; }}
+        .d-4 {{ bottom: 60px; right: 45px; animation-duration: 8s; }}
+
+        @keyframes floatEmoji {{
+            0% {{ transform: translateY(0px) rotate(0deg); }}
+            100% {{ transform: translateY(-12px) rotate(6deg); }}
+        }}
+
+        .app-shell {{
             width: 100%;
             max-width: 680px;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            position: relative;
+            z-index: 1;
         }}
 
-        /* Header / Navigation Bar */
+        /* Header */
         .header {{
             text-align: center;
-            padding: 24px 0 10px;
+            padding: 16px 0 8px;
         }}
 
-        .brand-badge {{
+        .brand-pill {{
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 999px;
-            background: var(--pill-bg);
-            border: 1px solid var(--surface-border);
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 90, 54, 0.2);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 14px;
+            color: var(--ios-coral);
+            box-shadow: 0 4px 12px rgba(255, 90, 54, 0.08);
+            margin-bottom: 12px;
         }}
 
         .title {{
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 40px;
+            font-weight: 800;
             letter-spacing: -0.035em;
-            margin: 0 0 8px 0;
-            color: var(--text-primary);
+            margin: 0;
+            color: var(--ios-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }}
+
+        .title span.highlight {{
+            background: linear-gradient(135deg, #FF5A36 0%, #FF8A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }}
 
         .subtitle {{
             font-size: 16px;
-            font-weight: 400;
-            color: var(--text-secondary);
-            margin: 0;
-            line-height: 1.45;
+            color: var(--ios-subtext);
+            margin: 6px 0 0;
+            font-weight: 450;
         }}
 
         /* iOS Glass Search Card */
         .glass-card {{
-            background: var(--surface-bg);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            background: var(--surface-glass);
+            backdrop-filter: blur(35px) saturate(190%);
+            -webkit-backdrop-filter: blur(35px) saturate(190%);
             border: 1px solid var(--surface-border);
-            border-radius: var(--radius-lg);
-            padding: 22px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            box-shadow: var(--surface-shadow);
         }}
 
-        form.search-form {{
+        form.search-box {{
             display: flex;
-            gap: 10px;
-            position: relative;
+            gap: 12px;
+            align-items: center;
         }}
 
-        .search-field {{
+        .input-wrapper {{
             flex: 1;
             position: relative;
             display: flex;
             align-items: center;
         }}
 
-        .search-icon {{
+        .input-icon {{
             position: absolute;
             left: 18px;
-            width: 18px;
-            height: 18px;
-            color: var(--text-secondary);
+            font-size: 20px;
             pointer-events: none;
         }}
 
-        .search-input {{
+        .search-field {{
             width: 100%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 15px 18px 15px 46px;
-            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px solid rgba(234, 88, 12, 0.15);
+            border-radius: 20px;
+            padding: 16px 20px 16px 52px;
+            font-size: 16.5px;
             font-family: inherit;
-            color: var(--text-primary);
+            color: var(--ios-dark);
             outline: none;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }}
 
-        .search-input::placeholder {{
-            color: var(--text-tertiary);
+        .search-field::placeholder {{
+            color: #A89C94;
         }}
 
-        .search-input:focus {{
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.24);
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06);
-        }}
-
-        .submit-btn {{
+        .search-field:focus {{
             background: #FFFFFF;
-            color: #000000;
+            border-color: var(--ios-coral);
+            box-shadow: 0 0 0 4px rgba(255, 90, 54, 0.12);
+        }}
+
+        .cook-action-btn {{
+            background: linear-gradient(135deg, #FF5A36 0%, #FF8A00 100%);
+            color: #FFFFFF;
             border: none;
-            border-radius: 18px;
-            padding: 0 24px;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: 20px;
+            padding: 0 26px;
+            height: 54px;
+            font-size: 16px;
+            font-weight: 700;
             font-family: inherit;
             cursor: pointer;
+            box-shadow: 0 8px 20px -4px rgba(255, 90, 54, 0.4);
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap;
         }}
 
-        .submit-btn:hover {{
-            background: #E5E5EA;
-            transform: scale(0.98);
+        .cook-action-btn:hover {{
+            transform: scale(0.98) translateY(-1px);
+            box-shadow: 0 10px 24px -2px rgba(255, 90, 54, 0.5);
         }}
 
-        .submit-btn:active {{
-            transform: scale(0.95);
+        .cook-action-btn:active {{
+            transform: scale(0.94);
         }}
 
-        /* Segmented / Suggestion Pills */
-        .suggestions-row {{
+        /* iOS Horizontal Scrolling Pills */
+        .food-pills {{
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 14px;
+            margin-top: 16px;
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 2px;
         }}
 
-        .suggestions-row::-webkit-scrollbar {{
+        .food-pills::-webkit-scrollbar {{
             display: none;
         }}
 
-        .suggestion-chip {{
-            padding: 7px 14px;
-            background: var(--pill-bg);
-            border: 1px solid var(--pill-border);
-            border-radius: 999px;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 500;
+        .food-pill {{
+            padding: 8px 16px;
+            background: var(--ios-pill-bg);
+            border: 1px solid rgba(234, 88, 12, 0.16);
+            border-radius: var(--radius-pill);
+            color: var(--ios-dark);
+            font-size: 13.5px;
+            font-weight: 600;
             cursor: pointer;
             white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             transition: all 0.2s ease;
             user-select: none;
         }}
 
-        .suggestion-chip:hover {{
-            background: rgba(255, 255, 255, 0.16);
-            color: var(--text-primary);
-            border-color: rgba(255, 255, 255, 0.24);
+        .food-pill:hover {{
+            background: #FFFFFF;
+            border-color: var(--ios-coral);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(255, 90, 54, 0.12);
         }}
 
-        .suggestion-chip:active {{
-            transform: scale(0.96);
+        .food-pill:active {{
+            transform: scale(0.95);
         }}
 
-        /* Recipe Result Container */
-        .recipe-wrapper {{
-            background: var(--surface-bg);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
+        /* Recipe Result Sheet */
+        .recipe-sheet {{
+            background: var(--surface-glass);
+            backdrop-filter: blur(40px) saturate(190%);
+            -webkit-backdrop-filter: blur(40px) saturate(190%);
             border: 1px solid var(--surface-border);
-            border-radius: var(--radius-lg);
-            padding: 32px 36px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: var(--radius-xl);
+            padding: 36px 38px;
+            box-shadow: var(--surface-shadow);
+            animation: sheetIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }}
 
-        @keyframes fadeIn {{
-            from {{ opacity: 0; transform: translateY(12px); }}
+        @keyframes sheetIn {{
+            from {{ opacity: 0; transform: translateY(16px); }}
             to {{ opacity: 1; transform: translateY(0); }}
         }}
 
-        /* Recipe Typography & Markdown Styling */
-        .recipe-content {{
-            line-height: 1.65;
-            color: #E5E5EA;
-            font-size: 15px;
+        /* Action Top Bar */
+        .sheet-top {{
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
         }}
 
-        .recipe-content h1, 
-        .recipe-content h2, 
-        .recipe-content h3 {{
-            color: var(--text-primary);
+        .copy-pill {{
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(234, 88, 12, 0.2);
+            color: var(--ios-dark);
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }}
+
+        .copy-pill:hover {{
+            background: #FFFFFF;
+            border-color: var(--ios-coral);
+        }}
+
+        /* Recipe Typography */
+        .recipe-body {{
+            line-height: 1.7;
+            color: #332B27;
+            font-size: 15.5px;
+        }}
+
+        .recipe-body h1, 
+        .recipe-body h2, 
+        .recipe-body h3 {{
+            color: var(--ios-dark);
             letter-spacing: -0.025em;
             margin-top: 26px;
             margin-bottom: 12px;
+            font-weight: 750;
         }}
 
-        .recipe-content h2 {{
-            font-size: 20px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--surface-border);
+        .recipe-body h2 {{
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1.5px solid rgba(234, 88, 12, 0.12);
             padding-bottom: 8px;
         }}
 
-        .recipe-content p {{
-            margin: 10px 0;
-            color: #D1D1D6;
-        }}
-
-        .recipe-content hr {{
+        .recipe-body hr {{
             border: none;
-            border-top: 1px solid var(--surface-border);
-            margin: 24px 0;
+            border-top: 1px dashed rgba(234, 88, 12, 0.2);
+            margin: 26px 0;
         }}
 
-        /* Modern iOS Inset Table */
+        /* iOS Card Inset Table */
         table {{
             width: 100%;
-            border-collapse: collapse;
-            margin: 18px 0;
-            background: rgba(0, 0, 0, 0.25);
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.7);
             border-radius: var(--radius-md);
             overflow: hidden;
-            border: 1px solid var(--surface-border);
+            border: 1px solid rgba(234, 88, 12, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
         }}
 
         th {{
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
+            background: var(--ios-peach);
+            color: #9A3412;
+            font-size: 12.5px;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            padding: 12px 16px;
+            padding: 13px 18px;
             text-align: left;
-            border-bottom: 1px solid var(--surface-border);
+            border-bottom: 1px solid rgba(234, 88, 12, 0.12);
         }}
 
         td {{
-            padding: 13px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            font-size: 14px;
+            padding: 13px 18px;
+            border-top: 1px solid rgba(234, 88, 12, 0.08);
+            font-size: 14.5px;
+            color: var(--ios-dark);
         }}
 
-        tr:last-child td {{
-            border-bottom: none;
+        tr:nth-child(even) td {{
+            background: rgba(255, 247, 240, 0.5);
         }}
 
-        /* Lists */
         ol, ul {{
-            padding-left: 20px;
+            padding-left: 22px;
             margin: 14px 0;
         }}
 
         li {{
             margin-bottom: 10px;
-            color: #E5E5EA;
         }}
 
         strong {{
-            color: #FFFFFF;
-            font-weight: 600;
-        }}
-
-        /* Action Bar */
-        .action-bar {{
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
-        }}
-
-        .icon-btn {{
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--surface-border);
-            color: var(--text-secondary);
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: inherit;
-        }}
-
-        .icon-btn:hover {{
-            background: rgba(255, 255, 255, 0.14);
-            color: var(--text-primary);
+            color: #C2410C;
+            font-weight: 700;
         }}
 
         /* Footer */
@@ -365,53 +425,60 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             text-align: center;
             padding: 16px;
             font-size: 13px;
-            color: var(--text-tertiary);
+            color: var(--ios-subtext);
+            font-weight: 500;
         }}
     </style>
 </head>
 <body>
-    <div class="app-container">
+    <!-- Floating iOS Food Emojis -->
+    <div class="ios-doodle d-1">🥑</div>
+    <div class="ios-doodle d-2">🍕</div>
+    <div class="ios-doodle d-3">🍜</div>
+    <div class="ios-doodle d-4">🥞</div>
+
+    <div class="app-shell">
         <header class="header">
-            <div class="brand-badge">Recipe Studio</div>
-            <h1 class="title">Savor</h1>
-            <p class="subtitle">Enter any dish to generate a clean, step-by-step culinary guide.</p>
+            <div class="brand-pill">👨‍🍳 Kitchen Studio</div>
+            <h1 class="title">Savor <span class="highlight">Studio</span></h1>
+            <p class="subtitle">Craft delicious, step-by-step culinary recipes in seconds.</p>
         </header>
 
         <div class="glass-card">
-            <form method="post" action="/recipe" class="search-form">
-                <div class="search-field">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+            <form method="post" action="/recipe" class="search-box">
+                <div class="input-wrapper">
+                    <span class="input-icon">🍽️</span>
                     <input 
                         type="text" 
                         name="dish" 
                         id="dishInput" 
-                        class="search-input" 
-                        placeholder="Search or enter a dish..." 
+                        class="search-field" 
+                        placeholder="What are we cooking today? (e.g. Pasta, Tacos...)" 
                         value="{dish_val}" 
                         required 
                         autocomplete="off"
                         autofocus
                     />
                 </div>
-                <button type="submit" class="submit-btn">Generate</button>
+                <button type="submit" class="cook-action-btn">
+                    <span>Cook It</span>
+                    <span>✨</span>
+                </button>
             </form>
 
-            <div class="suggestions-row">
-                <span class="suggestion-chip" onclick="quickFill('Butter Chicken')">Butter Chicken</span>
-                <span class="suggestion-chip" onclick="quickFill('Pasta Carbonara')">Pasta Carbonara</span>
-                <span class="suggestion-chip" onclick="quickFill('Crispy Falafel Bowl')">Falafel Bowl</span>
-                <span class="suggestion-chip" onclick="quickFill('Fluffy Pancakes')">Fluffy Pancakes</span>
-                <span class="suggestion-chip" onclick="quickFill('Guacamole & Chips')">Fresh Guacamole</span>
+            <div class="food-pills">
+                <span class="food-pill" onclick="quickFill('Butter Chicken')">🍗 Butter Chicken</span>
+                <span class="food-pill" onclick="quickFill('Creamy Pasta Carbonara')">🍝 Carbonara</span>
+                <span class="food-pill" onclick="quickFill('Crispy Falafel Bowl')">🧆 Falafel Bowl</span>
+                <span class="food-pill" onclick="quickFill('Fluffy Pancakes')">🥞 Fluffy Pancakes</span>
+                <span class="food-pill" onclick="quickFill('Fresh Guacamole & Salsa')">🥑 Guacamole</span>
             </div>
         </div>
 
         {recipe_content}
 
         <footer class="footer">
-            Designed with SF Pro & Dark Glass Aesthetics
+            Designed with iOS Frosted Glass & Warm Culinary Aesthetics
         </footer>
     </div>
 
@@ -423,13 +490,13 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         function copyRecipe() {{
-            const content = document.querySelector('.recipe-content');
+            const content = document.querySelector('.recipe-body');
             if (content) {{
                 navigator.clipboard.writeText(content.innerText).then(() => {{
                     const btn = document.getElementById('copyBtn');
                     if (btn) {{
                         btn.innerHTML = '✓ Copied';
-                        setTimeout(() => {{ btn.innerHTML = 'Copy'; }}, 2000);
+                        setTimeout(() => {{ btn.innerHTML = '📋 Copy Recipe'; }}, 2000);
                     }}
                 }});
             }}
@@ -450,13 +517,13 @@ def health():
 def get_recipe(dish: str = Form(...)):
     if not client:
         box = '''
-        <div class="recipe-wrapper" style="border-color: rgba(255, 69, 58, 0.4);">
-            <div style="color: #FF453A; font-weight: 500;">Configuration Notice: GROQ_API_KEY environment variable is not set.</div>
+        <div class="recipe-sheet" style="border-color: rgba(255, 90, 54, 0.4);">
+            <div style="color: #C2410C; font-weight: 600;">Configuration Notice: GROQ_API_KEY environment variable is not set.</div>
         </div>
         '''
         return render_page(dish_val=dish, recipe_content=box)
         
-    prompt = f"Give me a complete, refined recipe for: {dish}"
+    prompt = f"Give me a complete, mouthwatering recipe for: {dish}"
     try:
         response = client.chat.completions.create(
             model="openai/gpt-oss-120b",
@@ -464,13 +531,13 @@ def get_recipe(dish: str = Form(...)):
                 {
                     "role": "system",
                     "content": (
-                        "You are an expert executive chef. When given a dish name, generate an elegant, "
-                        "concise, and beautifully structured recipe formatted in clean markdown. Include:\n"
-                        "1. Dish Name & brief description\n"
-                        "2. Prep Time, Cook Time, and Servings (in a clean markdown table)\n"
+                        "You are a fun, expert executive chef. When given a dish name, generate a mouthwatering, "
+                        "vibrant, and easy-to-follow recipe formatted in clean markdown. Include:\n"
+                        "1. Dish Name & brief tantalizing description with food emojis\n"
+                        "2. Prep Time, Cook Time, and Servings (in a markdown table)\n"
                         "3. Ingredients list with measurements (in a markdown table)\n"
                         "4. Step-by-step numbered cooking instructions\n"
-                        "5. Chef's Secret Tip"
+                        "5. Chef's Pro Secret Tip"
                     )
                 },
                 {"role": "user", "content": prompt}
@@ -480,17 +547,17 @@ def get_recipe(dish: str = Form(...)):
         recipe_md = response.choices[0].message.content
         html_recipe = md.render(recipe_md)
         box = f'''
-        <div class="recipe-wrapper">
-            <div class="action-bar">
-                <button class="icon-btn" id="copyBtn" onclick="copyRecipe()">Copy Recipe</button>
+        <div class="recipe-sheet">
+            <div class="sheet-top">
+                <button class="copy-pill" id="copyBtn" onclick="copyRecipe()">📋 Copy Recipe</button>
             </div>
-            <div class="recipe-content">{html_recipe}</div>
+            <div class="recipe-body">{html_recipe}</div>
         </div>
         '''
     except Exception as e:
         box = f'''
-        <div class="recipe-wrapper" style="border-color: rgba(255, 69, 58, 0.4);">
-            <div style="color: #FF453A;">Error: {e}</div>
+        <div class="recipe-sheet" style="border-color: rgba(255, 90, 54, 0.4);">
+            <div style="color: #C2410C;">⚠️ Error: {e}</div>
         </div>
         '''
         
