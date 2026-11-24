@@ -28,19 +28,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
     <style>
         :root {{
             --bg-obsidian: #09090B;
-            --bg-elevated: #131316;
-            --bg-card: #18181C;
-            --bg-card-hover: #1F1F24;
+            --bg-card: #141417;
             --brand-green: #06C167;
             --brand-green-hover: #05A357;
-            --brand-green-subtle: rgba(6, 193, 103, 0.14);
             --border-subtle: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(6, 193, 103, 0.4);
+            --border-hover: rgba(6, 193, 103, 0.5);
             --text-pure: #FFFFFF;
             --text-dim: #A1A1AA;
             --text-faint: #71717A;
             --radius-pill: 9999px;
-            --radius-card: 20px;
+            --radius-tile: 20px;
         }}
 
         * {{
@@ -198,14 +195,13 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(1.02);
         }}
 
-        /* Smooth continuous blend from hero photo into obsidian dark ground */
         .hero-cinematic-overlay {{
             position: absolute;
             inset: 0;
             background: linear-gradient(
                 to bottom,
                 rgba(9, 9, 11, 0.75) 0%,
-                rgba(9, 9, 11, 0.3) 40%,
+                rgba(9, 9, 11, 0.28) 40%,
                 rgba(9, 9, 11, 0.8) 75%,
                 #09090B 100%
             );
@@ -360,7 +356,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           4. CURATED DARK CULINARY SHOWCASE (NO FAKE DELIVERY / NO CLUTTER)
+           4. OPTION 2: FULL-PHOTO CINEMATIC TILES (NO CLUNKY TEXT BOXES)
            ========================================================================== */
         .showcase-section {{
             max-width: 1240px;
@@ -395,157 +391,136 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         .showcase-grid {{
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 28px;
         }}
 
-        .dark-dish-card {{
-            background: var(--bg-card);
-            border-radius: var(--radius-card);
+        .cinematic-tile {{
+            position: relative;
+            aspect-ratio: 16 / 11;
+            border-radius: var(--radius-tile);
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid var(--border-subtle);
-            display: flex;
-            flex-direction: column;
-            text-decoration: none;
-            color: inherit;
+            background: #000000;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
         }}
 
-        .dark-dish-card:hover {{
-            background: var(--bg-card-hover);
-            transform: translateY(-4px);
+        .cinematic-tile:hover {{
+            transform: translateY(-6px);
             border-color: var(--border-hover);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border-hover);
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--border-hover);
         }}
 
-        .dish-media-wrap {{
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            position: relative;
-            overflow: hidden;
-            background: #000;
-        }}
-
-        .dish-media-wrap img {{
+        .tile-img {{
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.5s ease;
-            filter: brightness(0.9);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+            filter: brightness(0.88);
         }}
 
-        .dark-dish-card:hover .dish-media-wrap img {{
-            transform: scale(1.04);
-            filter: brightness(1.0);
+        .cinematic-tile:hover .tile-img {{
+            transform: scale(1.06);
+            filter: brightness(0.98);
         }}
 
-        .dish-floating-badges {{
+        /* Subtle dark gradient overlay covering bottom half */
+        .tile-gradient-overlay {{
             position: absolute;
-            top: 14px;
-            left: 14px;
-            display: flex;
-            gap: 8px;
-            z-index: 2;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.15) 0%,
+                rgba(0, 0, 0, 0.15) 35%,
+                rgba(9, 9, 11, 0.82) 75%,
+                rgba(9, 9, 11, 0.98) 100%
+            );
+            pointer-events: none;
         }}
 
-        .badge-pill {{
-            background: rgba(10, 10, 12, 0.78);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+        /* Top floating frosted pills */
+        .tile-top-badges {{
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2;
+            pointer-events: none;
+        }}
+
+        .tile-badge {{
+            background: rgba(10, 10, 14, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             color: #FFFFFF;
             padding: 5px 12px;
             border-radius: var(--radius-pill);
-            font-size: 11.5px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }}
 
-        .badge-pill.accent {{
+        .tile-badge.accent {{
             background: var(--brand-green);
             color: #000000;
             border-color: transparent;
-            font-weight: 800;
         }}
 
-        .badge-time {{
+        /* Integrated Bottom Content on the photo */
+        .tile-bottom-content {{
             position: absolute;
-            bottom: 14px;
-            right: 14px;
-            background: rgba(10, 10, 12, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #FFFFFF;
-            padding: 5px 12px;
-            border-radius: var(--radius-pill);
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }}
-
-        .dish-content-box {{
-            padding: 22px 24px 24px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 22px;
+            z-index: 2;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            flex: 1;
+            gap: 6px;
         }}
 
-        .dish-name-row {{
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
-        }}
-
-        .dish-title {{
+        .tile-title {{
             font-size: 20px;
             font-weight: 800;
             color: #FFFFFF;
             margin: 0;
             letter-spacing: -0.02em;
-            line-height: 1.3;
+            line-height: 1.25;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         }}
 
-        .dish-description {{
-            font-size: 14.5px;
-            line-height: 1.55;
-            color: var(--text-dim);
-            margin: 0;
-        }}
-
-        .dish-footer-row {{
-            margin-top: auto;
-            padding-top: 14px;
-            border-top: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }}
-
-        .dish-tag-list {{
-            display: flex;
-            gap: 8px;
-            font-size: 12.5px;
-            color: var(--text-faint);
-            font-weight: 600;
-        }}
-
-        .cook-trigger-pill {{
-            color: var(--brand-green);
+        .tile-desc {{
             font-size: 13.5px;
-            font-weight: 700;
+            color: rgba(255, 255, 255, 0.78);
+            margin: 0;
+            line-height: 1.45;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }}
+
+        .tile-action-row {{
+            margin-top: 6px;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: gap 0.2s;
+            color: var(--brand-green);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition: gap 0.2s ease;
         }}
 
-        .dark-dish-card:hover .cook-trigger-pill {{
-            gap: 9px;
+        .cinematic-tile:hover .tile-action-row {{
+            gap: 10px;
         }}
 
         /* ==========================================================================
@@ -559,7 +534,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         .recipe-card-brand {{
             background: var(--bg-card);
-            border-radius: var(--radius-card);
+            border-radius: var(--radius-tile);
             box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
             overflow: hidden;
             border: 1px solid var(--border-subtle);
@@ -785,14 +760,14 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
                 <span>Trending:</span>
                 <span class="quick-tag" onclick="quickOrder('Truffle Tagliatelle')">Truffle Tagliatelle</span>
                 <span class="quick-tag" onclick="quickOrder('Garlic Herb Ribeye')">Ribeye Steak</span>
+                <span class="quick-tag" onclick="quickOrder('Pan-Seared Scallops')">Pan-Seared Scallops</span>
                 <span class="quick-tag" onclick="quickOrder('Spicy Thai Basil Chicken')">Thai Basil Chicken</span>
                 <span class="quick-tag" onclick="quickOrder('Murgh Makhani')">Butter Chicken</span>
-                <span class="quick-tag" onclick="quickOrder('Birria Tacos')">Birria Tacos</span>
             </div>
         </div>
     </header>
 
-    <!-- 4. Curated Dark Culinary Showcase Grid -->
+    <!-- 4. Option 2: Full-Photo Cinematic Tiles (No Clunky Boxes) -->
     <main class="showcase-section" id="showcase">
         <div class="showcase-header">
             <div>
@@ -802,115 +777,48 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
 
         <div class="showcase-grid">
-            <!-- Card 1 -->
-            <div class="dark-dish-card" onclick="quickOrder('Truffle Tagliatelle with Wild Mushrooms')">
-                <div class="dish-media-wrap">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80" alt="Truffle Tagliatelle">
-                    <div class="dish-floating-badges">
-                        <span class="badge-pill accent">Chef Selection</span>
-                        <span class="badge-pill">Italian</span>
-                    </div>
-                    <div class="badge-time">20 min prep</div>
+            <!-- Tile 1 -->
+            <div class="cinematic-tile" onclick="quickOrder('Garlic Herb Basted Prime Ribeye')">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=80" alt="Prime Ribeye" class="tile-img">
+                <div class="tile-gradient-overlay"></div>
+                <div class="tile-top-badges">
+                    <span class="tile-badge accent">15 Min Prep</span>
+                    <span class="tile-badge">Steakhouse</span>
                 </div>
-                <div class="dish-content-box">
-                    <div class="dish-name-row">
-                        <h3 class="dish-title">Truffle Tagliatelle with Wild Mushrooms</h3>
-                    </div>
-                    <p class="dish-description">
-                        Silky bronze-die tagliatelle swirled in browned Normandy butter, pan-roasted forest mushrooms, aged Parmigiano-Reggiano, and black summer truffle carpaccio.
-                    </p>
-                    <div class="dish-footer-row">
-                        <div class="dish-tag-list">
-                            <span>Intermediate</span>
-                            <span>•</span>
-                            <span>Vegetarian</span>
-                        </div>
-                        <div class="cook-trigger-pill">Generate Recipe →</div>
-                    </div>
+                <div class="tile-bottom-content">
+                    <h3 class="tile-title">Garlic Herb Basted Ribeye</h3>
+                    <p class="tile-desc">Cast-iron seared ribeye basted with foaming rosemary, thyme & cracked garlic butter.</p>
+                    <div class="tile-action-row">Generate Recipe →</div>
                 </div>
             </div>
 
-            <!-- Card 2 -->
-            <div class="dark-dish-card" onclick="quickOrder('Garlic Butter Basted Ribeye Steak')">
-                <div class="dish-media-wrap">
-                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=80" alt="Garlic Butter Ribeye">
-                    <div class="dish-floating-badges">
-                        <span class="badge-pill accent">Steakhouse</span>
-                        <span class="badge-pill">High Protein</span>
-                    </div>
-                    <div class="badge-time">15 min prep</div>
+            <!-- Tile 2 -->
+            <div class="cinematic-tile" onclick="quickOrder('Truffle Tagliatelle with Wild Mushrooms')">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80" alt="Truffle Tagliatelle" class="tile-img">
+                <div class="tile-gradient-overlay"></div>
+                <div class="tile-top-badges">
+                    <span class="tile-badge accent">20 Min Prep</span>
+                    <span class="tile-badge">Italian</span>
                 </div>
-                <div class="dish-content-box">
-                    <div class="dish-name-row">
-                        <h3 class="dish-title">Garlic Herb Basted Prime Ribeye</h3>
-                    </div>
-                    <p class="dish-description">
-                        Cast-iron seared prime ribeye steak basted continuously with foaming European butter, cracked garlic cloves, fresh rosemary sprigs, and thyme.
-                    </p>
-                    <div class="dish-footer-row">
-                        <div class="dish-tag-list">
-                            <span>Easy Technique</span>
-                            <span>•</span>
-                            <span>Keto / Low-Carb</span>
-                        </div>
-                        <div class="cook-trigger-pill">Generate Recipe →</div>
-                    </div>
+                <div class="tile-bottom-content">
+                    <h3 class="tile-title">Truffle Tagliatelle</h3>
+                    <p class="tile-desc">Silky hand-rolled pasta, pan-roasted forest chanterelles & shaved black truffle.</p>
+                    <div class="tile-action-row">Generate Recipe →</div>
                 </div>
             </div>
 
-            <!-- Card 3 -->
-            <div class="dark-dish-card" onclick="quickOrder('Spicy Thai Holy Basil Chicken Pad Krapow')">
-                <div class="dish-media-wrap">
-                    <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1000&q=80" alt="Thai Basil Chicken">
-                    <div class="dish-floating-badges">
-                        <span class="badge-pill accent">Street Classic</span>
-                        <span class="badge-pill">Southeast Asian</span>
-                    </div>
-                    <div class="badge-time">12 min prep</div>
+            <!-- Tile 3 -->
+            <div class="cinematic-tile" onclick="quickOrder('Pan-Seared Jumbo Scallops in Lemon Butter')">
+                <img src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=1000&q=80" alt="Pan-Seared Scallops" class="tile-img">
+                <div class="tile-gradient-overlay"></div>
+                <div class="tile-top-badges">
+                    <span class="tile-badge accent">12 Min Prep</span>
+                    <span class="tile-badge">Seafood</span>
                 </div>
-                <div class="dish-content-box">
-                    <div class="dish-name-row">
-                        <h3 class="dish-title">Spicy Thai Holy Basil Chicken (Pad Krapow)</h3>
-                    </div>
-                    <p class="dish-description">
-                        High-heat wok-fried minced chicken infused with garlic, bird's eye chilies, aromatic Thai holy basil, and savory oyster sauce topped with a crispy fried egg.
-                    </p>
-                    <div class="dish-footer-row">
-                        <div class="dish-tag-list">
-                            <span>Quick 15-Min</span>
-                            <span>•</span>
-                            <span>Bold & Spicy</span>
-                        </div>
-                        <div class="cook-trigger-pill">Generate Recipe →</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="dark-dish-card" onclick="quickOrder('Pan-Seared Crispy Salmon with Quinoa Bowl')">
-                <div class="dish-media-wrap">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=80" alt="Crispy Salmon Bowl">
-                    <div class="dish-floating-badges">
-                        <span class="badge-pill accent">Nutrient Dense</span>
-                        <span class="badge-pill">Pescatarian</span>
-                    </div>
-                    <div class="badge-time">22 min prep</div>
-                </div>
-                <div class="dish-content-box">
-                    <div class="dish-name-row">
-                        <h3 class="dish-title">Pan-Seared King Salmon Grain Bowl</h3>
-                    </div>
-                    <p class="dish-description">
-                        Crispy skin King salmon fillet served over lemon-herb warm quinoa, roasted sweet potatoes, Haas avocado slices, and honey-dijon vinaigrette.
-                    </p>
-                    <div class="dish-footer-row">
-                        <div class="dish-tag-list">
-                            <span>Healthy Balance</span>
-                            <span>•</span>
-                            <span>Omega-3 Rich</span>
-                        </div>
-                        <div class="cook-trigger-pill">Generate Recipe →</div>
-                    </div>
+                <div class="tile-bottom-content">
+                    <h3 class="tile-title">Pan-Seared Scallops</h3>
+                    <p class="tile-desc">Golden crusted sea scallops with garlic cauliflower puree, lemon butter & microgreens.</p>
+                    <div class="tile-action-row">Generate Recipe →</div>
                 </div>
             </div>
         </div>
