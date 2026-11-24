@@ -2,12 +2,11 @@ from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 import os
 import sys
+import json
 import re
 from dotenv import load_dotenv
 from groq import Groq
-from markdown_it import MarkdownIt
 
-md = MarkdownIt("commonmark").enable(["table", "strikethrough"])
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
@@ -28,7 +27,7 @@ def get_dish_photo(dish: str) -> str:
         return "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1600&q=85"
     if any(k in d for k in ["pizza", "margherita", "calzone"]):
         return "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1600&q=85"
-    if any(k in d for k in ["scallop", "salmon", "seafood", "fish", "shrimp", "lobster", "tuna"]):
+    if any(k in d for k in ["scallop", "salmon", "seafood", "fish", "shrimp", "lobster", "tuna", "sea bass"]):
         return "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=1600&q=85"
     if any(k in d for k in ["chicken", "curry", "biryani", "tikka", "krapow"]):
         return "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=1600&q=85"
@@ -53,7 +52,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
     <style>
         :root {{
             --bg-obsidian: #09090B;
-            --bg-card: #141417;
             --brand-green: #06C167;
             --brand-green-hover: #05A357;
             --border-subtle: rgba(255, 255, 255, 0.08);
@@ -62,7 +60,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             --text-dim: #A1A1AA;
             --text-faint: #71717A;
             --radius-pill: 9999px;
-            --radius-tile: 20px;
+            --radius-tile: 22px;
         }}
 
         * {{
@@ -196,7 +194,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           3. CINEMATIC FULL-BLEED FOOD HERO WITH SEAMLESS BLEND
+           3. CINEMATIC FULL-BLEED FOOD HERO
            ========================================================================== */
         .cinematic-hero {{
             position: relative;
@@ -381,7 +379,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           4. FULL-PHOTO CINEMATIC TILES (NO CLUNKY BOXES)
+           4. FULL-PHOTO CINEMATIC TILES
            ========================================================================== */
         .showcase-section {{
             max-width: 1240px;
@@ -546,7 +544,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           5. SEAMLESSLY BLENDED DISH RECIPE SECTION (WITH EMERALD GREEN GLOW ACCENTS)
+           5. EXACT RECIPE DESIGN MATCHING MOCKUP PICTURE
            ========================================================================== */
         .recipe-section {{
             max-width: 1080px;
@@ -580,7 +578,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             filter: brightness(0.72) contrast(1.1);
         }}
 
-        /* Continuous vignette gradient melting photo directly into background */
+        /* Feathered photo melt directly into the dark background */
         .dish-hero-gradient {{
             position: absolute;
             inset: 0;
@@ -607,12 +605,18 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .dish-hero-text {{
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-width: 680px;
+            gap: 14px;
+            max-width: 720px;
+        }}
+
+        .dish-stat-pills-row {{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }}
 
         .dish-badge-pill {{
-            align-self: flex-start;
             background: var(--brand-green);
             color: #000000;
             font-size: 11px;
@@ -622,6 +626,20 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             padding: 5px 14px;
             border-radius: var(--radius-pill);
             box-shadow: 0 0 16px rgba(6, 193, 103, 0.4);
+        }}
+
+        .dish-stat-pill {{
+            background: rgba(10, 10, 14, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #FFFFFF;
+            padding: 5px 13px;
+            border-radius: var(--radius-pill);
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
         }}
 
         .dish-hero-headline {{
@@ -679,32 +697,34 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             background: rgba(255, 255, 255, 0.25);
         }}
 
-        /* Completely Blended Recipe Body (No Hard Box, No Isolated Frame) */
-        .recipe-editorial-body {{
-            background: transparent;
-            border: none;
-            padding: 36px 8px 60px;
-            color: #D4D4D8;
-            font-size: 16px;
-            line-height: 1.7;
+        /* Completely Blended Recipe Stream (No Stiff Box) */
+        .recipe-stream {{
+            padding: 36px 0 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
         }}
 
-        .recipe-editorial-body h1 {{
-            display: none; /* Rendered prominently on the hero banner */
+        .recipe-intro-text {{
+            font-size: 18px;
+            line-height: 1.6;
+            color: #D1D1D6;
+            margin: 0;
+            font-style: italic;
         }}
 
-        .recipe-editorial-body h2 {{
+        .recipe-block-title {{
             font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.02em;
             color: #FFFFFF;
-            margin: 40px 0 18px;
+            margin: 0 0 20px;
             display: flex;
             align-items: center;
             gap: 12px;
         }}
 
-        .recipe-editorial-body h2::before {{
+        .recipe-block-title::before {{
             content: '';
             display: inline-block;
             width: 4px;
@@ -714,122 +734,186 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             box-shadow: 0 0 10px var(--brand-green);
         }}
 
-        .recipe-editorial-body p {{
-            margin: 0 0 18px;
-            color: #D1D1D6;
+        /* Ingredients Checklist Grid */
+        .ingredients-grid {{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
         }}
 
-        .recipe-editorial-body hr {{
-            border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            margin: 36px 0;
-        }}
-
-        /* Floating Translucent Metric Tables */
-        .recipe-editorial-body table {{
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 20px 0 36px;
+        .ingredient-chip {{
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.07);
-            overflow: hidden;
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
         }}
 
-        .recipe-editorial-body th {{
-            background: rgba(255, 255, 255, 0.06);
-            color: #FFFFFF;
-            font-size: 12.5px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 16px 22px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-            text-align: left;
+        .ingredient-chip:hover {{
+            border-color: rgba(6, 193, 103, 0.35);
+            background: rgba(6, 193, 103, 0.04);
         }}
 
-        .recipe-editorial-body td {{
-            padding: 16px 22px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        .ingredient-chip.checked {{
+            border-color: rgba(6, 193, 103, 0.4);
+            background: rgba(6, 193, 103, 0.08);
+        }}
+
+        .ingredient-chip.checked .ing-check-icon {{
+            background: var(--brand-green);
+            border-color: var(--brand-green);
+        }}
+
+        .ingredient-chip.checked .ing-name {{
+            text-decoration: line-through;
+            color: var(--text-faint);
+        }}
+
+        .ing-check-icon {{
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }}
+
+        .ing-check-icon svg {{
+            width: 11px;
+            height: 11px;
+            stroke: #000000;
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }}
+
+        .ing-content {{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+
+        .ing-name-row {{
             font-size: 15px;
-            color: #EDEDED;
-            line-height: 1.5;
+            font-weight: 700;
+            color: #FFFFFF;
         }}
 
-        .recipe-editorial-body tr:hover td {{
-            background: rgba(255, 255, 255, 0.02);
+        .ing-name-row span.ing-amt {{
+            color: var(--brand-green);
+            margin-right: 6px;
         }}
 
-        /* Floating Translucent Chef Step Cards (With Emerald Number Badges) */
-        .recipe-editorial-body ol {{
-            list-style: none;
-            counter-reset: chef-step;
-            padding: 0;
+        .ing-notes {{
+            font-size: 13px;
+            color: var(--text-faint);
+        }}
+
+        /* Master Method Step Cards (Matching Mockup Picture) */
+        .step-cards-list {{
             display: flex;
             flex-direction: column;
             gap: 16px;
-            margin: 24px 0 36px;
         }}
 
-        .recipe-editorial-body ol li {{
-            counter-increment: chef-step;
-            position: relative;
-            padding: 22px 24px 22px 72px;
+        .step-card {{
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.07);
-            font-size: 15.5px;
-            line-height: 1.65;
-            color: #EDEDED;
+            padding: 24px 28px;
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
             transition: all 0.2s ease;
         }}
 
-        .recipe-editorial-body ol li:hover {{
+        .step-card:hover {{
             border-color: rgba(6, 193, 103, 0.4);
             background: rgba(6, 193, 103, 0.03);
             box-shadow: 0 8px 24px rgba(6, 193, 103, 0.08);
-            transform: translateX(3px);
+            transform: translateX(4px);
         }}
 
-        .recipe-editorial-body ol li::before {{
-            content: counter(chef-step, decimal-leading-zero);
-            position: absolute;
-            left: 22px;
-            top: 22px;
-            width: 34px;
-            height: 34px;
+        .step-badge {{
+            width: 36px;
+            height: 36px;
             background: rgba(6, 193, 103, 0.16);
             color: var(--brand-green);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12.5px;
+            font-size: 13px;
             font-weight: 800;
             letter-spacing: -0.02em;
             border: 1px solid rgba(6, 193, 103, 0.35);
             box-shadow: 0 0 14px rgba(6, 193, 103, 0.25);
+            flex-shrink: 0;
         }}
 
-        /* Illuminated Chef Secret Card (With Emerald Accent & Glow) */
-        .recipe-editorial-body blockquote {{
-            margin: 36px 0 20px;
-            padding: 24px 28px;
+        .step-text-wrap {{
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }}
+
+        .step-title {{
+            font-size: 17px;
+            font-weight: 800;
+            color: #FFFFFF;
+            letter-spacing: -0.01em;
+            margin: 0;
+        }}
+
+        .step-desc {{
+            font-size: 15px;
+            line-height: 1.65;
+            color: #E4E4E7;
+            margin: 0;
+        }}
+
+        /* Illuminated Chef Secret Card (Matching Mockup Picture) */
+        .chef-secret-card {{
+            margin-top: 10px;
+            padding: 26px 30px;
             background: linear-gradient(135deg, rgba(6, 193, 103, 0.08) 0%, rgba(16, 16, 20, 0.95) 100%);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(6, 193, 103, 0.35);
             border-left: 5px solid var(--brand-green);
             border-radius: 16px;
-            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 8px 28px rgba(6, 193, 103, 0.12);
+        }}
+
+        .chef-secret-label {{
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--brand-green);
+        }}
+
+        .chef-secret-content {{
             font-size: 15.5px;
             line-height: 1.6;
-            box-shadow: 0 8px 28px rgba(6, 193, 103, 0.12);
+            color: #FFFFFF;
+            margin: 0;
         }}
 
         /* ==========================================================================
@@ -875,7 +959,8 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             .nav-switchers {{ display: none; }}
             .dish-hero-meta {{ flex-direction: column; align-items: flex-start; }}
             .dish-hero-banner {{ padding: 28px; }}
-            .recipe-editorial-body {{ padding: 32px 12px; }}
+            .ingredients-grid {{ grid-template-columns: 1fr; }}
+            .recipe-section {{ padding: 0 20px; }}
         }}
 
         @media (max-width: 640px) {{
@@ -1012,7 +1097,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
     </main>
 
-    <!-- 5. Seamlessly Blended Dish Recipe Section (With Restored Emerald Glow) -->
+    <!-- 5. Seamlessly Blended Recipe Section (Matching Mockup Picture) -->
     <div id="kitchen-pass" class="recipe-section">
         {recipe_content}
     </div>
@@ -1036,10 +1121,14 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             document.querySelector('.search-container').submit();
         }}
 
+        function toggleIng(el) {{
+            el.classList.toggle('checked');
+        }}
+
         function copyRecipeText() {{
-            const body = document.querySelector('.recipe-editorial-body');
-            if (body) {{
-                navigator.clipboard.writeText(body.innerText).then(() => {{
+            const stream = document.querySelector('.recipe-stream');
+            if (stream) {{
+                navigator.clipboard.writeText(stream.innerText).then(() => {{
                     const btn = document.getElementById('copyRecipeBtn');
                     if (btn) {{
                         btn.innerHTML = 'Copied to Clipboard';
@@ -1065,13 +1154,13 @@ def health():
 def get_recipe(dish: str = Form(...)):
     if not client:
         box = '''
-        <div class="recipe-editorial-body" style="color: #FF5A36;">
+        <div style="color: #FF5A36; padding: 40px; text-align: center;">
             GROQ_API_KEY environment variable is not set.
         </div>
         '''
         return render_page(dish_val=dish, recipe_content=box)
         
-    prompt = f"Give me an executive restaurant chef recipe for: {dish}"
+    prompt = f"Provide a complete, Michelin-level executive chef recipe for: {dish}"
     try:
         response = client.chat.completions.create(
             model="openai/gpt-oss-120b",
@@ -1079,31 +1168,82 @@ def get_recipe(dish: str = Form(...)):
                 {
                     "role": "system",
                     "content": (
-                        "You are an acclaimed executive restaurant chef creating a masterclass recipe. "
-                        "Do NOT use any emojis anywhere in your output.\n\n"
-                        "Format your response cleanly in markdown with the following structure:\n"
-                        "# " + dish + "\n"
-                        "A vivid, 1-sentence introduction describing the flavors, aromas, and texture.\n\n"
-                        "## Prep & Cook Overview\n"
-                        "| Prep Time | Cook Time | Total Time | Servings |\n"
-                        "| :--- | :--- | :--- | :--- |\n"
-                        "| (e.g. 15 min) | (e.g. 20 min) | (e.g. 35 min) | (e.g. 4 servings) |\n\n"
-                        "## Mise En Place & Measurements\n"
-                        "| Ingredient | Exact Measurement | Chef's Notes |\n"
-                        "| :--- | :--- | :--- |\n\n"
-                        "## Step-By-Step Culinary Method\n"
-                        "Provide numbered steps (1., 2., 3., etc.). Keep each step concise, actionable, and focused on technique (heat control, searing, seasoning, resting).\n\n"
-                        "## Executive Chef's Secret Technique\n"
-                        "> The single crucial pro tip that elevates this dish from home cooking to Michelin-star standard."
+                        "You are an acclaimed executive restaurant chef. Create an immaculate masterclass recipe.\n"
+                        "Do NOT use any emojis anywhere.\n"
+                        "Return a JSON object with this exact structure:\n"
+                        "{\n"
+                        '  "dish": "' + dish + '",\n'
+                        '  "intro": "A 1-sentence vivid sensory description of flavors and texture",\n'
+                        '  "prep_time": "15 min",\n'
+                        '  "cook_time": "20 min",\n'
+                        '  "servings": "4 servings",\n'
+                        '  "level": "Executive Grade",\n'
+                        '  "ingredients": [\n'
+                        '    {"amount": "400g", "name": "Bronze-Die Tagliatelle", "note": "Use fresh egg pasta"},\n'
+                        '    {"amount": "60g", "name": "Unsalted Normandy Butter", "note": "Cold, cubed"}\n'
+                        '  ],\n'
+                        '  "steps": [\n'
+                        '    {"step_num": "01", "title": "Prep & Emulsify", "instruction": "Step details..."},\n'
+                        '    {"step_num": "02", "title": "Finish & Plate", "instruction": "Step details..."}\n'
+                        '  ],\n'
+                        '  "secret_technique": "The single crucial pro tip that elevates this dish to Michelin standard."\n'
+                        "}\n"
+                        "Output strictly valid JSON only. No markdown formatting, no comments."
                     )
                 },
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.7,
+            temperature=0.4,
+            response_format={"type": "json_object"}
         )
-        recipe_md = response.choices[0].message.content
-        html_recipe = md.render(recipe_md)
+        data = json.loads(response.choices[0].message.content)
         photo_url = get_dish_photo(dish)
+
+        # Build floating stat pills
+        prep = data.get("prep_time", "15 min")
+        cook = data.get("cook_time", "20 min")
+        servings = data.get("servings", "4 servings")
+        level = data.get("level", "Executive Grade")
+        intro = data.get("intro", "")
+
+        # Build Ingredients Cards
+        ing_html_list = []
+        for ing in data.get("ingredients", []):
+            amt = ing.get("amount", "")
+            name = ing.get("name", "")
+            note = ing.get("note", "")
+            note_html = f'<div class="ing-notes">{note}</div>' if note else ""
+            ing_html_list.append(f'''
+            <div class="ingredient-chip" onclick="toggleIng(this)">
+                <div class="ing-check-icon">
+                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="ing-content">
+                    <div class="ing-name-row"><span class="ing-amt">{amt}</span><span class="ing-name">{name}</span></div>
+                    {note_html}
+                </div>
+            </div>
+            ''')
+        ingredients_html = "".join(ing_html_list)
+
+        # Build Steps Cards
+        steps_html_list = []
+        for idx, step in enumerate(data.get("steps", []), 1):
+            num = step.get("step_num", f"{idx:02d}")
+            title = step.get("title", f"Step {idx}")
+            desc = step.get("instruction", "")
+            steps_html_list.append(f'''
+            <div class="step-card">
+                <div class="step-badge">{num}</div>
+                <div class="step-text-wrap">
+                    <h4 class="step-title">{title}</h4>
+                    <p class="step-desc">{desc}</p>
+                </div>
+            </div>
+            ''')
+        steps_html = "".join(steps_html_list)
+
+        secret = data.get("secret_technique", "")
 
         box = f'''
         <div class="dish-hero-banner">
@@ -1111,7 +1251,13 @@ def get_recipe(dish: str = Form(...)):
             <div class="dish-hero-gradient"></div>
             <div class="dish-hero-meta">
                 <div class="dish-hero-text">
-                    <span class="dish-badge-pill">Chef Masterclass</span>
+                    <div class="dish-stat-pills-row">
+                        <span class="dish-badge-pill">Masterclass</span>
+                        <span class="dish-stat-pill">{prep} prep</span>
+                        <span class="dish-stat-pill">{cook} cook</span>
+                        <span class="dish-stat-pill">{servings}</span>
+                        <span class="dish-stat-pill">{level}</span>
+                    </div>
                     <h1 class="dish-hero-headline">{dish}</h1>
                 </div>
                 <div class="dish-hero-actions">
@@ -1120,13 +1266,33 @@ def get_recipe(dish: str = Form(...)):
                 </div>
             </div>
         </div>
-        <div class="recipe-editorial-body">
-            {html_recipe}
+
+        <div class="recipe-stream">
+            <p class="recipe-intro-text">"{intro}"</p>
+
+            <div>
+                <h3 class="recipe-block-title">Mise En Place & Ingredients</h3>
+                <div class="ingredients-grid">
+                    {ingredients_html}
+                </div>
+            </div>
+
+            <div>
+                <h3 class="recipe-block-title">Master Culinary Method</h3>
+                <div class="step-cards-list">
+                    {steps_html}
+                </div>
+            </div>
+
+            <div class="chef-secret-card">
+                <span class="chef-secret-label">Executive Chef's Secret Technique</span>
+                <p class="chef-secret-content">{secret}</p>
+            </div>
         </div>
         '''
     except Exception as e:
         box = f'''
-        <div class="recipe-editorial-body" style="color: #FF5A36;">
+        <div style="color: #FF5A36; padding: 40px; text-align: center;">
             Error generating recipe: {e}
         </div>
         '''
