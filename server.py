@@ -29,12 +29,13 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         :root {{
             --brand-green: #06C167;
             --brand-green-hover: #05A357;
-            --surface-white: #FFFFFF;
-            --surface-glass: rgba(255, 255, 255, 0.88);
+            --surface-glass-card: rgba(255, 255, 255, 0.88);
+            --surface-glass-nav: rgba(255, 255, 255, 0.65);
             --ink-black: #0F0F0F;
             --ink-charcoal: #2C2C2E;
             --ink-muted: #6E6E6E;
             --ink-faint: #A0A0A0;
+            --border-glass: rgba(255, 255, 255, 0.6);
             --border-light: rgba(0, 0, 0, 0.08);
             --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.06);
             --shadow-hover: 0 20px 44px -8px rgba(0, 0, 0, 0.12);
@@ -51,7 +52,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #FAF7F2;
+            background-color: transparent;
             color: var(--ink-black);
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
@@ -59,7 +60,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           FLUID 3D ORGANIC MESH BACKGROUND (WEBGL THREE.JS CANVAS)
+           FULL-PAGE 3D WEBGL FLUID MESH CANVAS
            ========================================================================== */
         #webgl-canvas {{
             position: fixed;
@@ -71,18 +72,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             pointer-events: none;
         }}
 
-        /* Atmospheric soft blur overlay */
+        /* Ultra-light ambient diffusion overlay */
         .ambient-mesh-overlay {{
             position: fixed;
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            background: radial-gradient(circle at 50% 30%, rgba(250, 247, 242, 0.2) 0%, rgba(250, 247, 242, 0.75) 100%);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: radial-gradient(circle at 50% 25%, transparent 20%, rgba(250, 246, 240, 0.3) 100%);
         }}
 
-        /* Content Container sitting on top of 3D Canvas */
+        /* Content layer */
         .page-content-wrapper {{
             position: relative;
             z-index: 2;
@@ -90,9 +89,9 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         /* 1. TOP ANNOUNCEMENT BANNER */
         .top-banner {{
-            background: rgba(15, 15, 15, 0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             color: #FFFFFF;
             font-size: 13px;
             font-weight: 600;
@@ -102,7 +101,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             justify-content: center;
             gap: 12px;
             letter-spacing: -0.01em;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
         }}
 
         .top-banner span.promo-badge {{
@@ -115,15 +114,15 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             text-transform: uppercase;
         }}
 
-        /* 2. BRAND NAVIGATION BAR */
+        /* 2. TRANSLUCENT BRAND NAVIGATION BAR */
         .brand-nav {{
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--surface-glass-nav);
             backdrop-filter: blur(24px) saturate(180%);
             -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
             padding: 14px 40px;
             display: flex;
             align-items: center;
@@ -157,10 +156,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .nav-switchers {{
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.04);
+            background: rgba(0, 0, 0, 0.05);
             border-radius: var(--radius-pill);
             padding: 4px;
-            border: 1px solid var(--border-light);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }}
 
         .nav-switcher-btn {{
@@ -176,7 +175,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .nav-switcher-btn.active {{
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.95);
             color: var(--ink-black);
             box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }}
@@ -203,12 +202,12 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(0.98);
         }}
 
-        /* 3. UBEREATS CUISINE TOP STRIP */
+        /* 3. TRANSLUCENT CUISINE CATEGORY STRIP */
         .cuisine-subbar {{
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border-light);
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             padding: 12px 40px;
             overflow-x: auto;
             scrollbar-width: none;
@@ -250,10 +249,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             height: 48px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid var(--border-light);
-            background: #FAFAFA;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.5);
             transition: border-color 0.18s, transform 0.18s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
         }}
 
         .cuisine-pill:hover .thumb-round {{
@@ -274,9 +273,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             letter-spacing: -0.01em;
         }}
 
-        /* 4. HERO SECTION WITH 3D DEPTH */
+        /* 4. HERO SECTION (COMPLETELY TRANSPARENT TO SHOW 3D WAVES) */
         .hero-banner {{
-            padding: 64px 40px 68px;
+            background: transparent;
+            padding: 72px 40px 80px;
             position: relative;
         }}
 
@@ -293,25 +293,26 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .hero-badge-pill {{
             display: inline-flex;
             align-items: center;
-            padding: 6px 16px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid var(--border-light);
-            backdrop-filter: blur(12px);
+            padding: 6px 18px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             color: #038E4B;
             border-radius: var(--radius-pill);
             font-size: 13px;
             font-weight: 700;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
         }}
 
         .hero-title {{
-            font-size: 58px;
+            font-size: 60px;
             font-weight: 800;
             line-height: 1.05;
             letter-spacing: -0.04em;
             color: var(--ink-black);
             margin: 0;
-            text-shadow: 0 2px 20px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 4px 24px rgba(255, 255, 255, 0.6);
         }}
 
         .hero-title span.accent {{
@@ -319,11 +320,11 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .hero-desc {{
-            font-size: 18.5px;
+            font-size: 19px;
             line-height: 1.5;
-            color: var(--ink-muted);
+            color: var(--ink-charcoal);
             margin: 0;
-            max-width: 600px;
+            max-width: 620px;
         }}
 
         .search-container {{
@@ -331,8 +332,8 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             max-width: 760px;
             margin-top: 10px;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-radius: var(--radius-pill);
             padding: 6px 6px 6px 22px;
             border: 2px solid var(--ink-black);
@@ -406,16 +407,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .quick-tag {{
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             color: var(--ink-charcoal);
-            padding: 6px 15px;
+            padding: 7px 16px;
             border-radius: var(--radius-pill);
             cursor: pointer;
             font-weight: 600;
             transition: all 0.15s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }}
 
         .quick-tag:hover {{
@@ -425,7 +426,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: translateY(-1px);
         }}
 
-        /* 5. UBEREATS FOOD CARDS FEED */
+        /* 5. UBEREATS FOOD CARDS FEED (FLOATING ON 3D MESH) */
         .marketplace-feed {{
             max-width: 1240px;
             margin: 20px auto 0;
@@ -440,15 +441,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .feed-title {{
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             letter-spacing: -0.03em;
             margin: 0;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
         }}
 
         .feed-subtitle {{
-            font-size: 14px;
-            color: var(--ink-muted);
+            font-size: 14.5px;
+            color: var(--ink-charcoal);
             margin: 4px 0 0;
         }}
 
@@ -460,10 +462,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
         .uber-card {{
             background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius-card);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
             overflow: hidden;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -475,7 +477,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .uber-card:hover {{
             transform: translateY(-6px);
             box-shadow: var(--shadow-hover);
-            border-color: rgba(6, 193, 103, 0.4);
+            border-color: rgba(6, 193, 103, 0.5);
         }}
 
         .uber-img-wrap {{
@@ -590,7 +592,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             border-radius: var(--radius-card);
             box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.16);
             overflow: hidden;
-            border: 1px solid var(--border-light);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }}
 
@@ -743,7 +745,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
     </style>
 </head>
 <body>
-    <!-- Real-time 3D Fluid Organic Mesh Canvas (WebGL Three.js) -->
+    <!-- Real-time 3D Fluid Organic Mesh Canvas (WebGL Three.js) Covering 100% of Screen -->
     <canvas id="webgl-canvas"></canvas>
     <div class="ambient-mesh-overlay"></div>
 
@@ -754,7 +756,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             <span>Generate calibrated chef recipes with exact gram measurements in seconds</span>
         </div>
 
-        <!-- 2. Brand Navigation Bar -->
+        <!-- 2. Translucent Brand Navigation Bar -->
         <nav class="brand-nav">
             <div class="nav-left">
                 <a href="/" class="brand-logo">
@@ -772,7 +774,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             </div>
         </nav>
 
-        <!-- 3. Cuisine Category Strip -->
+        <!-- 3. Translucent Cuisine Category Strip -->
         <div class="cuisine-subbar">
             <div class="cuisine-strip">
                 <div class="cuisine-pill" onclick="quickOrder('Pizza Margherita')">
@@ -818,7 +820,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             </div>
         </div>
 
-        <!-- 4. Focused Centered Hero -->
+        <!-- 4. Pure Translucent Hero (3D Mesh Waves Visible Behind Title & Search) -->
         <header class="hero-banner">
             <div class="hero-wrap">
                 <div class="hero-badge-pill">Curated Kitchen Intelligence</div>
@@ -1023,9 +1025,9 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         camera.position.z = 5;
 
         // Custom 3D Mesh Geometry with Fluid Displacement
-        const geometry = new THREE.PlaneGeometry(10, 8, 48, 48);
+        const geometry = new THREE.PlaneGeometry(12, 10, 56, 56);
 
-        // Warm culinary palette shader (Cream, Baked Peach, Citrus Honey, Basil Touch)
+        // Warm culinary palette shader (Cream, Peach, Citrus Honey, Herb touch)
         const material = new THREE.ShaderMaterial({{
             vertexShader: `
                 uniform float uTime;
@@ -1037,13 +1039,13 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
                     vUv = uv;
                     vec3 pos = position;
 
-                    // Organic 3D wave sine frequencies
-                    float elevation = sin(pos.x * 1.5 + uTime * 0.4) * cos(pos.y * 1.5 + uTime * 0.4) * 0.35;
-                    elevation += sin(pos.x * 3.0 + uTime * 0.6) * 0.15;
+                    // Organic 3D wave sine frequencies across the entire viewport
+                    float elevation = sin(pos.x * 1.4 + uTime * 0.45) * cos(pos.y * 1.4 + uTime * 0.45) * 0.42;
+                    elevation += sin(pos.x * 2.8 + uTime * 0.65) * 0.18;
 
                     // Interactive mouse ripple displacement
                     float dist = distance(uv, uMouse);
-                    elevation += sin(dist * 8.0 - uTime * 1.2) * 0.08 * (1.0 - smoothstep(0.0, 0.6, dist));
+                    elevation += sin(dist * 7.0 - uTime * 1.2) * 0.10 * (1.0 - smoothstep(0.0, 0.65, dist));
 
                     pos.z += elevation;
                     vElevation = elevation;
@@ -1058,15 +1060,15 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 
                 void main() {{
                     // Fluid color blending: warm cream butter, peach honey, and subtle green vitality
-                    vec3 colorCream = vec3(0.98, 0.96, 0.92);
-                    vec3 colorPeach = vec3(0.99, 0.88, 0.78);
-                    vec3 colorAmber = vec3(0.98, 0.78, 0.62);
-                    vec3 colorHerb  = vec3(0.92, 0.96, 0.88);
+                    vec3 colorCream = vec3(0.97, 0.94, 0.88);
+                    vec3 colorPeach = vec3(0.99, 0.84, 0.72);
+                    vec3 colorAmber = vec3(0.98, 0.72, 0.54);
+                    vec3 colorHerb  = vec3(0.89, 0.95, 0.84);
 
-                    float mixFactor = smoothstep(-0.4, 0.4, vElevation);
+                    float mixFactor = smoothstep(-0.45, 0.45, vElevation);
                     vec3 color = mix(colorCream, colorPeach, mixFactor);
-                    color = mix(color, colorAmber, sin(vUv.x * 3.14 + uTime * 0.2) * 0.35);
-                    color = mix(color, colorHerb, cos(vUv.y * 3.14 + uTime * 0.3) * 0.15);
+                    color = mix(color, colorAmber, sin(vUv.x * 3.14 + uTime * 0.25) * 0.40);
+                    color = mix(color, colorHerb, cos(vUv.y * 3.14 + uTime * 0.35) * 0.20);
 
                     gl_FragColor = vec4(color, 1.0);
                 }}
@@ -1081,7 +1083,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         const mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
 
-        // Pointer tracking for organic liquid reaction
         let targetMouseX = 0.5, targetMouseY = 0.5;
         window.addEventListener('mousemove', (e) => {{
             targetMouseX = e.clientX / window.innerWidth;
@@ -1099,11 +1100,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             const elapsedTime = clock.getElapsedTime();
             material.uniforms.uTime.value = elapsedTime;
 
-            // Smooth mouse follow
             material.uniforms.uMouse.value.x += (targetMouseX - material.uniforms.uMouse.value.x) * 0.05;
             material.uniforms.uMouse.value.y += (targetMouseY - material.uniforms.uMouse.value.y) * 0.05;
 
-            mesh.rotation.z = Math.sin(elapsedTime * 0.1) * 0.03;
+            mesh.rotation.z = Math.sin(elapsedTime * 0.1) * 0.04;
             renderer.render(scene, camera);
             requestAnimationFrame(animate);
         }}
