@@ -30,17 +30,17 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             --brand-green: #06C167;
             --brand-green-hover: #05A357;
             --surface-white: #FFFFFF;
-            --surface-soft: #F7F7F7;
+            --surface-soft: #F8F8F8;
             --surface-subtle: #EEEEEE;
             --ink-black: #0F0F0F;
             --ink-charcoal: #2C2C2E;
             --ink-muted: #6E6E6E;
-            --ink-faint: #9E9E9E;
+            --ink-faint: #A0A0A0;
             --border-light: rgba(0, 0, 0, 0.08);
-            --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.07);
-            --shadow-pop: 0 20px 48px -12px rgba(0, 0, 0, 0.12);
+            --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.06);
+            --shadow-pop: 0 24px 48px -12px rgba(0, 0, 0, 0.10);
             --radius-pill: 9999px;
-            --radius-card: 22px;
+            --radius-card: 24px;
             --radius-inner: 16px;
         }}
 
@@ -60,14 +60,14 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           1. TOP ANNOUNCEMENT TICKER
+           1. TOP ANNOUNCEMENT BANNER
            ========================================================================== */
         .top-banner {{
             background: #000000;
             color: #FFFFFF;
             font-size: 13px;
             font-weight: 600;
-            padding: 9px 24px;
+            padding: 10px 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -92,11 +92,11 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             border-bottom: 1px solid var(--border-light);
-            padding: 14px 32px;
+            padding: 14px 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -105,7 +105,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .nav-left {{
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 32px;
         }}
 
         .brand-logo {{
@@ -156,7 +156,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .nav-right {{
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }}
 
         .nav-link {{
@@ -174,7 +174,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .nav-cta {{
             background: var(--ink-black);
             color: #FFFFFF;
-            padding: 10px 20px;
+            padding: 10px 22px;
             border-radius: var(--radius-pill);
             text-decoration: none;
             font-size: 13.5px;
@@ -188,96 +188,28 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           3. PROFESSIONAL CUISINE CATEGORIES BAR (PHOTO THUMBNAILS - NO EMOJIS)
-           ========================================================================== */
-        .cuisine-subbar {{
-            background: #FFFFFF;
-            border-bottom: 1px solid var(--border-light);
-            padding: 12px 32px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }}
-
-        .cuisine-subbar::-webkit-scrollbar {{
-            display: none;
-        }}
-
-        .cuisine-strip {{
-            max-width: 1180px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }}
-
-        .cuisine-pill {{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            text-decoration: none;
-            color: var(--ink-charcoal);
-            padding: 4px;
-            transition: all 0.15s ease;
-            white-space: nowrap;
-        }}
-
-        .cuisine-pill:hover {{
-            transform: translateY(-2px);
-            color: var(--brand-green);
-        }}
-
-        .cuisine-pill .thumb-round {{
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--border-light);
-            background: #FAFAFA;
-            transition: border-color 0.15s;
-        }}
-
-        .cuisine-pill:hover .thumb-round {{
-            border-color: var(--brand-green);
-        }}
-
-        .cuisine-pill .thumb-round img {{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }}
-
-        .cuisine-pill .label {{
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }}
-
-        /* ==========================================================================
-           4. VIBRANT HERO SECTION
+           3. HERO SECTION (FOCUSED & SPACIOUS LAYOUT)
            ========================================================================== */
         .hero-banner {{
             background: #FFFFFF;
-            padding: 48px 32px 64px;
+            padding: 64px 32px 76px;
             position: relative;
             border-bottom: 1px solid var(--border-light);
         }}
 
         .hero-wrap {{
-            max-width: 1180px;
+            max-width: 1140px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
-            gap: 56px;
+            gap: 64px;
             align-items: center;
         }}
 
         .hero-content {{
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 20px;
         }}
 
         .hero-badge {{
@@ -306,16 +238,16 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .hero-desc {{
-            font-size: 17.5px;
+            font-size: 18px;
             line-height: 1.5;
             color: var(--ink-muted);
             margin: 0;
-            max-width: 520px;
+            max-width: 500px;
         }}
 
-        /* UberEats Search Input */
+        /* Large Search Input */
         .search-container {{
-            margin-top: 8px;
+            margin-top: 10px;
             background: var(--surface-white);
             border-radius: var(--radius-pill);
             padding: 6px 6px 6px 20px;
@@ -385,7 +317,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(0.95);
         }}
 
-        /* Quick Search Pill Tags */
         .quick-searches {{
             display: flex;
             align-items: center;
@@ -393,7 +324,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             gap: 8px;
             font-size: 13px;
             color: var(--ink-muted);
-            margin-top: 4px;
+            margin-top: 6px;
         }}
 
         .quick-tag {{
@@ -411,160 +342,107 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             color: var(--ink-black);
         }}
 
-        /* Hero Food Mosaic Collage */
-        .hero-mosaic {{
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+        /* Hero Right: Clean, High-Impact Featured Platter (Replaced Cluttered 4-Grid) */
+        .hero-visual-frame {{
             position: relative;
         }}
 
-        .mosaic-card {{
+        .hero-spotlight-card {{
             border-radius: var(--radius-card);
             overflow: hidden;
-            box-shadow: var(--shadow-card);
+            box-shadow: 0 24px 56px -12px rgba(0, 0, 0, 0.18);
+            background: #E8E8E8;
+            aspect-ratio: 4 / 3.4;
             position: relative;
-            background: #EEE;
-            aspect-ratio: 1;
-            transition: transform 0.25s ease, box-shadow 0.25s;
+            transition: transform 0.3s ease;
         }}
 
-        .mosaic-card:hover {{
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: var(--shadow-pop);
+        .hero-spotlight-card:hover {{
+            transform: scale(1.015);
         }}
 
-        .mosaic-card:nth-child(2) {{
-            transform: translateY(24px);
-        }}
-        .mosaic-card:nth-child(2):hover {{
-            transform: translateY(20px) scale(1.02);
-        }}
-
-        .mosaic-card img {{
+        .hero-spotlight-card img {{
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }}
 
-        .mosaic-tag {{
+        /* Floating Overlays for Editorial Depth */
+        .spotlight-glass-badge {{
             position: absolute;
-            bottom: 12px;
-            left: 12px;
-            background: rgba(15, 15, 15, 0.78);
-            backdrop-filter: blur(8px);
-            color: #FFF;
-            padding: 5px 12px;
-            border-radius: var(--radius-pill);
-            font-size: 12px;
-            font-weight: 700;
-        }}
-
-        /* ==========================================================================
-           5. POPULAR DISH CARDS
-           ========================================================================== */
-        .category-shelf {{
-            max-width: 1180px;
-            margin: 48px auto 0;
-            padding: 0 32px;
-        }}
-
-        .shelf-header {{
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 16px 20px;
+            border-radius: var(--radius-inner);
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 22px;
+            align-items: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }}
 
-        .shelf-title {{
-            font-size: 26px;
-            font-weight: 800;
-            letter-spacing: -0.03em;
+        .spotlight-info h4 {{
             margin: 0;
-        }}
-
-        .shelf-subtitle {{
-            font-size: 14.5px;
-            color: var(--ink-muted);
-            margin: 4px 0 0;
-        }}
-
-        .food-grid {{
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 22px;
-        }}
-
-        .food-item-card {{
-            background: var(--surface-white);
-            border-radius: var(--radius-card);
-            overflow: hidden;
-            border: 1px solid var(--border-light);
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: left;
-        }}
-
-        .food-item-card:hover {{
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-pop);
-            border-color: rgba(6, 193, 103, 0.3);
-        }}
-
-        .food-item-card .thumb {{
-            width: 100%;
-            height: 165px;
-            position: relative;
-            overflow: hidden;
-            background: #FAFAF7;
-        }}
-
-        .food-item-card .thumb img {{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.35s ease;
-        }}
-
-        .food-item-card:hover .thumb img {{
-            transform: scale(1.06);
-        }}
-
-        .food-item-card .badge-time {{
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #FFFFFF;
-            color: var(--ink-black);
-            padding: 4px 10px;
-            border-radius: var(--radius-pill);
-            font-size: 11.5px;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }}
-
-        .food-item-details {{
-            padding: 16px;
-        }}
-
-        .food-item-title {{
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--ink-black);
-            margin: 0 0 4px;
         }}
 
-        .food-item-meta {{
+        .spotlight-info p {{
+            margin: 2px 0 0;
             font-size: 13px;
             color: var(--ink-muted);
         }}
 
+        .spotlight-btn {{
+            background: var(--brand-green);
+            color: #FFFFFF;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+        }}
+
+        .spotlight-btn:hover {{
+            background: var(--brand-green-hover);
+        }}
+
+        /* Floating Stat Chip */
+        .floating-stat-chip {{
+            position: absolute;
+            top: -16px;
+            right: 24px;
+            background: #000000;
+            color: #FFFFFF;
+            padding: 10px 18px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+
+        .floating-stat-chip span.dot {{
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--brand-green);
+        }}
+
         /* ==========================================================================
-           6. RECIPE OUTPUT SECTION
+           4. RECIPE OUTPUT SECTION (ANCHOR)
            ========================================================================== */
         .recipe-section {{
-            max-width: 880px;
+            max-width: 900px;
             margin: 48px auto;
             padding: 0 24px;
         }}
@@ -586,7 +464,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .recipe-header-bar {{
             background: var(--ink-black);
             color: #FFFFFF;
-            padding: 18px 28px;
+            padding: 18px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -607,7 +485,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             background: rgba(255, 255, 255, 0.15);
             color: #FFF;
             border: none;
-            padding: 7px 16px;
+            padding: 7px 18px;
             border-radius: var(--radius-pill);
             font-size: 12.5px;
             font-weight: 700;
@@ -621,7 +499,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .recipe-main-body {{
-            padding: 40px;
+            padding: 44px;
             line-height: 1.7;
             font-size: 16px;
             color: var(--ink-charcoal);
@@ -683,22 +561,22 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           7. BRAND PERKS (CLEAN SVG ICONS - NO EMOJIS)
+           5. BRAND PERKS (WHY SAVOR)
            ========================================================================== */
         .perks-strip {{
             background: var(--surface-white);
             border-top: 1px solid var(--border-light);
             border-bottom: 1px solid var(--border-light);
-            padding: 64px 32px;
-            margin-top: 72px;
+            padding: 68px 32px;
+            margin-top: 60px;
         }}
 
         .perks-grid {{
-            max-width: 1180px;
+            max-width: 1140px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            gap: 48px;
         }}
 
         .perk-card {{
@@ -708,8 +586,8 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .perk-icon-svg {{
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 14px;
             background: rgba(6, 193, 103, 0.12);
             color: var(--brand-green);
@@ -750,7 +628,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .footer-inner {{
-            max-width: 1180px;
+            max-width: 1140px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -766,7 +644,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .footer-copy {{
-            max-width: 1180px;
+            max-width: 1140px;
             margin: 28px auto 0;
             font-size: 13px;
             color: rgba(255, 255, 255, 0.4);
@@ -778,7 +656,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         @media (max-width: 900px) {{
             .hero-wrap {{ grid-template-columns: 1fr; gap: 40px; }}
             .hero-title {{ font-size: 42px; }}
-            .food-grid {{ grid-template-columns: repeat(2, 1fr); }}
             .perks-grid {{ grid-template-columns: 1fr; gap: 32px; }}
             .nav-switchers, .nav-links {{ display: none; }}
         }}
@@ -805,59 +682,12 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
 
         <div class="nav-right">
-            <a href="#popular" class="nav-link">Trending Dishes</a>
             <a href="#why-savor" class="nav-link">Why Savor</a>
             <a href="#search-anchor" class="nav-cta">Cook Tonight</a>
         </div>
     </nav>
 
-    <!-- 3. Clean Photo-Thumbnail Categories (Zero Emojis, Real Photography) -->
-    <div class="cuisine-subbar">
-        <div class="cuisine-strip">
-            <div class="cuisine-pill" onclick="quickOrder('Pizza Margherita')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=120&q=80" alt="Pizza"></div>
-                <span class="label">Pizza</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Smash Cheeseburger')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=120&q=80" alt="Burgers"></div>
-                <span class="label">Burgers</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Pasta Carbonara')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=120&q=80" alt="Italian"></div>
-                <span class="label">Italian</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Chicken Biryani')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=120&q=80" alt="Indian"></div>
-                <span class="label">Indian</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Street Tacos')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=120&q=80" alt="Mexican"></div>
-                <span class="label">Mexican</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Tonkotsu Ramen')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=120&q=80" alt="Ramen"></div>
-                <span class="label">Ramen</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Salmon Sushi Roll')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=120&q=80" alt="Japanese"></div>
-                <span class="label">Japanese</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Mediterranean Salad')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=120&q=80" alt="Healthy"></div>
-                <span class="label">Healthy</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Fluffy Blueberry Pancakes')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=120&q=80" alt="Breakfast"></div>
-                <span class="label">Breakfast</span>
-            </div>
-            <div class="cuisine-pill" onclick="quickOrder('Chocolate Glazed Donut')">
-                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1527515862127-a4fc05baf7a5?auto=format&fit=crop&w=120&q=80" alt="Desserts"></div>
-                <span class="label">Desserts</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. Hero Section -->
+    <!-- 3. Hero Section (Clean, Uncluttered Editorial Layout) -->
     <header class="hero-banner">
         <div class="hero-wrap">
             <div class="hero-content">
@@ -904,90 +734,32 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
                 </div>
             </div>
 
-            <!-- Welcoming Food Mosaic -->
-            <div class="hero-mosaic">
-                <div class="mosaic-card">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Restaurant Dish">
-                    <div class="mosaic-tag">Pasta & Noodles</div>
+            <!-- Single Clean Editorial Hero Platter (Replaced Cluttered Multiple Images) -->
+            <div class="hero-visual-frame">
+                <div class="floating-stat-chip">
+                    <span class="dot"></span>
+                    <span>Chef Tested Daily</span>
                 </div>
-                <div class="mosaic-card">
-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" alt="Artisan Pizza">
-                    <div class="mosaic-tag">Woodfired Pizza</div>
-                </div>
-                <div class="mosaic-card">
-                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Juicy Burger">
-                    <div class="mosaic-tag">Smash Burgers</div>
-                </div>
-                <div class="mosaic-card">
-                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=600&q=80" alt="Biryani Bowl">
-                    <div class="mosaic-tag">Aromatic Biryani</div>
+                <div class="hero-spotlight-card">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80" alt="Artisan Italian Pasta">
+                    <div class="spotlight-glass-badge">
+                        <div class="spotlight-info">
+                            <h4>Fresh Tagliatelle al Tartufo</h4>
+                            <p>Handmade pasta with shaved black truffle</p>
+                        </div>
+                        <button class="spotlight-btn" onclick="quickOrder('Tagliatelle al Tartufo')">Get Recipe</button>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
-
-    <!-- Popular Dishes Shelf -->
-    <section class="category-shelf" id="popular">
-        <div class="shelf-header">
-            <div>
-                <h2 class="shelf-title">Popular Cravings Today</h2>
-                <p class="shelf-subtitle">Select any dish below to generate your custom recipe instantly</p>
-            </div>
-        </div>
-
-        <div class="food-grid">
-            <div class="food-item-card" onclick="quickOrder('Butter Chicken with Garlic Naan')">
-                <div class="thumb">
-                    <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80" alt="Butter Chicken">
-                    <div class="badge-time">35 min</div>
-                </div>
-                <div class="food-item-details">
-                    <h3 class="food-item-title">Butter Chicken</h3>
-                    <div class="food-item-meta">Rich & Creamy · North Indian</div>
-                </div>
-            </div>
-
-            <div class="food-item-card" onclick="quickOrder('Classic Roman Pasta Carbonara')">
-                <div class="thumb">
-                    <img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80" alt="Pasta Carbonara">
-                    <div class="badge-time">20 min</div>
-                </div>
-                <div class="food-item-details">
-                    <h3 class="food-item-title">Pasta Carbonara</h3>
-                    <div class="food-item-meta">Guanciale & Pecorino · Italian</div>
-                </div>
-            </div>
-
-            <div class="food-item-card" onclick="quickOrder('Crispy Double Cheeseburger')">
-                <div class="thumb">
-                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="Cheeseburger">
-                    <div class="badge-time">15 min</div>
-                </div>
-                <div class="food-item-details">
-                    <h3 class="food-item-title">Smash Cheeseburger</h3>
-                    <div class="food-item-meta">Caramelized Edges · American</div>
-                </div>
-            </div>
-
-            <div class="food-item-card" onclick="quickOrder('Street-Style Tacos al Pastor')">
-                <div class="thumb">
-                    <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80" alt="Tacos">
-                    <div class="badge-time">25 min</div>
-                </div>
-                <div class="food-item-details">
-                    <h3 class="food-item-title">Tacos al Pastor</h3>
-                    <div class="food-item-meta">Spiced Pork & Pineapple · Mexican</div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Recipe Output Anchor Area -->
     <div id="kitchen-pass" class="recipe-section">
         {recipe_content}
     </div>
 
-    <!-- Perks / Why Savor (Clean Minimalist Vector Icons) -->
+    <!-- Perks / Why Savor -->
     <section class="perks-strip" id="why-savor">
         <div class="perks-grid">
             <div class="perk-card">
