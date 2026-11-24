@@ -24,13 +24,11 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
     <title>Savor — Good Food Made Effortless</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {{
             --brand-green: #06C167;
             --brand-green-hover: #05A357;
-            --brand-coral: #FF5A36;
-            --brand-yellow: #FFC043;
             --surface-white: #FFFFFF;
             --surface-soft: #F7F7F7;
             --surface-subtle: #EEEEEE;
@@ -62,7 +60,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           1. TOP ANNOUNCEMENT TICKER (UBEREATS / DOORDASH PROMO BANNER)
+           1. TOP ANNOUNCEMENT TICKER
            ========================================================================== */
         .top-banner {{
             background: #000000;
@@ -128,7 +126,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             background: var(--brand-green);
         }}
 
-        /* UberEats-Style Location & Dining Mode Switcher */
         .nav-switchers {{
             display: flex;
             align-items: center;
@@ -139,7 +136,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         .nav-switcher-btn {{
-            padding: 6px 14px;
+            padding: 6px 16px;
             border-radius: var(--radius-pill);
             font-size: 13px;
             font-weight: 700;
@@ -191,12 +188,12 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           3. UBEREATS FOOD CATEGORY ICONS BAR
+           3. PROFESSIONAL CUISINE CATEGORIES BAR (PHOTO THUMBNAILS - NO EMOJIS)
            ========================================================================== */
         .cuisine-subbar {{
             background: #FFFFFF;
             border-bottom: 1px solid var(--border-light);
-            padding: 14px 32px;
+            padding: 12px 32px;
             overflow-x: auto;
             scrollbar-width: none;
         }}
@@ -210,7 +207,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             margin: 0 auto;
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 24px;
         }}
 
         .cuisine-pill {{
@@ -221,8 +218,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             cursor: pointer;
             text-decoration: none;
             color: var(--ink-charcoal);
-            padding: 4px 8px;
-            border-radius: 12px;
+            padding: 4px;
             transition: all 0.15s ease;
             white-space: nowrap;
         }}
@@ -232,12 +228,29 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             color: var(--brand-green);
         }}
 
-        .cuisine-pill .icon {{
-            font-size: 26px;
+        .cuisine-pill .thumb-round {{
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border-light);
+            background: #FAFAFA;
+            transition: border-color 0.15s;
+        }}
+
+        .cuisine-pill:hover .thumb-round {{
+            border-color: var(--brand-green);
+        }}
+
+        .cuisine-pill .thumb-round img {{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }}
 
         .cuisine-pill .label {{
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: -0.01em;
         }}
@@ -270,7 +283,6 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .hero-badge {{
             display: inline-flex;
             align-items: center;
-            gap: 8px;
             padding: 6px 14px;
             background: rgba(6, 193, 103, 0.1);
             color: #038E4B;
@@ -301,7 +313,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             max-width: 520px;
         }}
 
-        /* UberEats-Style Massive Search Input */
+        /* UberEats Search Input */
         .search-container {{
             margin-top: 8px;
             background: var(--surface-white);
@@ -321,8 +333,14 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: translateY(-2px);
         }}
 
-        .search-icon {{
-            font-size: 22px;
+        .search-icon-svg {{
+            width: 20px;
+            height: 20px;
+            stroke: var(--ink-charcoal);
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }}
 
         .search-field {{
@@ -367,7 +385,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             transform: scale(0.95);
         }}
 
-        /* Popular Quick Tags directly under search */
+        /* Quick Search Pill Tags */
         .quick-searches {{
             display: flex;
             align-items: center;
@@ -381,7 +399,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .quick-tag {{
             background: var(--surface-soft);
             color: var(--ink-charcoal);
-            padding: 5px 12px;
+            padding: 5px 14px;
             border-radius: var(--radius-pill);
             cursor: pointer;
             font-weight: 600;
@@ -444,7 +462,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           5. INSPIRATION CATEGORIES (UBEREATS VIBE DISH CARDS)
+           5. POPULAR DISH CARDS
            ========================================================================== */
         .category-shelf {{
             max-width: 1180px;
@@ -540,13 +558,10 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .food-item-meta {{
             font-size: 13px;
             color: var(--ink-muted);
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }}
 
         /* ==========================================================================
-           6. RECIPE OUTPUT SECTION (THE KITCHEN PASS)
+           6. RECIPE OUTPUT SECTION
            ========================================================================== */
         .recipe-section {{
             max-width: 880px;
@@ -668,7 +683,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         }}
 
         /* ==========================================================================
-           7. BRAND PERKS (WHY SAVOR)
+           7. BRAND PERKS (CLEAN SVG ICONS - NO EMOJIS)
            ========================================================================== */
         .perks-strip {{
             background: var(--surface-white);
@@ -689,19 +704,28 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         .perk-card {{
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }}
 
-        .perk-icon {{
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
+        .perk-icon-svg {{
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             background: rgba(6, 193, 103, 0.12);
             color: var(--brand-green);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+        }}
+
+        .perk-icon-svg svg {{
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }}
 
         .perk-heading {{
@@ -763,20 +787,20 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
 <body>
     <!-- 1. Top Announcement Ticker -->
     <div class="top-banner">
-        <span class="promo-badge">PRO CHEF V2.5</span>
-        <span>🍳 Generate infinite restaurant recipes with exact gram measurements in seconds</span>
+        <span class="promo-badge">PRO V2.5</span>
+        <span>Generate calibrated chef recipes with exact gram measurements in seconds</span>
     </div>
 
-    <!-- 2. Brand Navigation Bar with UberEats-Style Location/Dining Toggle -->
+    <!-- 2. Brand Navigation Bar -->
     <nav class="brand-nav">
         <div class="nav-left">
             <a href="/" class="brand-logo">
                 Savor<span class="dot"></span>
             </a>
             <div class="nav-switchers">
-                <button class="nav-switcher-btn active">🍳 Home Cooking</button>
-                <button class="nav-switcher-btn">⚡ 15-Min Quick</button>
-                <button class="nav-switcher-btn">🌱 Healthy & Keto</button>
+                <button class="nav-switcher-btn active">Home Cooking</button>
+                <button class="nav-switcher-btn">15-Min Quick</button>
+                <button class="nav-switcher-btn">Healthy & Keto</button>
             </div>
         </div>
 
@@ -787,47 +811,47 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         </div>
     </nav>
 
-    <!-- 3. UberEats-Style Quick Cuisine Category Icons Bar -->
+    <!-- 3. Clean Photo-Thumbnail Categories (Zero Emojis, Real Photography) -->
     <div class="cuisine-subbar">
         <div class="cuisine-strip">
             <div class="cuisine-pill" onclick="quickOrder('Pizza Margherita')">
-                <span class="icon">🍕</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=120&q=80" alt="Pizza"></div>
                 <span class="label">Pizza</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Smash Cheeseburger')">
-                <span class="icon">🍔</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=120&q=80" alt="Burgers"></div>
                 <span class="label">Burgers</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Pasta Carbonara')">
-                <span class="icon">🍝</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=120&q=80" alt="Italian"></div>
                 <span class="label">Italian</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Chicken Biryani')">
-                <span class="icon">🍛</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=120&q=80" alt="Indian"></div>
                 <span class="label">Indian</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Street Tacos')">
-                <span class="icon">🌮</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=120&q=80" alt="Mexican"></div>
                 <span class="label">Mexican</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Tonkotsu Ramen')">
-                <span class="icon">🍜</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=120&q=80" alt="Ramen"></div>
                 <span class="label">Ramen</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Salmon Sushi Roll')">
-                <span class="icon">🍣</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=120&q=80" alt="Japanese"></div>
                 <span class="label">Japanese</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Mediterranean Salad')">
-                <span class="icon">🥗</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=120&q=80" alt="Healthy"></div>
                 <span class="label">Healthy</span>
             </div>
             <div class="cuisine-pill" onclick="quickOrder('Fluffy Blueberry Pancakes')">
-                <span class="icon">🥞</span>
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=120&q=80" alt="Breakfast"></div>
                 <span class="label">Breakfast</span>
             </div>
-            <div class="cuisine-pill" onclick="quickOrder('Churro with Chocolate')">
-                <span class="icon">🍩</span>
+            <div class="cuisine-pill" onclick="quickOrder('Chocolate Glazed Donut')">
+                <div class="thumb-round"><img src="https://images.unsplash.com/photo-1527515862127-a4fc05baf7a5?auto=format&fit=crop&w=120&q=80" alt="Desserts"></div>
                 <span class="label">Desserts</span>
             </div>
         </div>
@@ -837,7 +861,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
     <header class="hero-banner">
         <div class="hero-wrap">
             <div class="hero-content">
-                <div class="hero-badge">✨ Craving something delicious?</div>
+                <div class="hero-badge">Curated Kitchen Intelligence</div>
                 <h1 class="hero-title">
                     Order from your fridge.<br>
                     Cook like a <span class="accent">pro.</span>
@@ -846,10 +870,13 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
                     Craving authentic tacos, creamy pasta, or buttery curry? Enter any dish name and Savor serves up the exact measurements, steps, and chef secrets.
                 </p>
 
-                <!-- UberEats Inspired Large Search Bar -->
+                <!-- Search Input -->
                 <div id="search-anchor">
                     <form method="post" action="/recipe" class="search-container">
-                        <span class="search-icon">🔍</span>
+                        <svg class="search-icon-svg" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
                         <input 
                             type="text" 
                             name="dish" 
@@ -904,7 +931,7 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         <div class="shelf-header">
             <div>
                 <h2 class="shelf-title">Popular Cravings Today</h2>
-                <p class="shelf-subtitle">Click any dish below to generate your custom recipe in 3 seconds</p>
+                <p class="shelf-subtitle">Select any dish below to generate your custom recipe instantly</p>
             </div>
         </div>
 
@@ -912,44 +939,44 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
             <div class="food-item-card" onclick="quickOrder('Butter Chicken with Garlic Naan')">
                 <div class="thumb">
                     <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=600&q=80" alt="Butter Chicken">
-                    <div class="badge-time">⏱️ 35 min</div>
+                    <div class="badge-time">35 min</div>
                 </div>
                 <div class="food-item-details">
                     <h3 class="food-item-title">Butter Chicken</h3>
-                    <div class="food-item-meta">🍛 Rich & Creamy · North Indian</div>
+                    <div class="food-item-meta">Rich & Creamy · North Indian</div>
                 </div>
             </div>
 
             <div class="food-item-card" onclick="quickOrder('Classic Roman Pasta Carbonara')">
                 <div class="thumb">
                     <img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80" alt="Pasta Carbonara">
-                    <div class="badge-time">⏱️ 20 min</div>
+                    <div class="badge-time">20 min</div>
                 </div>
                 <div class="food-item-details">
                     <h3 class="food-item-title">Pasta Carbonara</h3>
-                    <div class="food-item-meta">🍝 Guanciale & Pecorino · Italian</div>
+                    <div class="food-item-meta">Guanciale & Pecorino · Italian</div>
                 </div>
             </div>
 
             <div class="food-item-card" onclick="quickOrder('Crispy Double Cheeseburger')">
                 <div class="thumb">
                     <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="Cheeseburger">
-                    <div class="badge-time">⏱️ 15 min</div>
+                    <div class="badge-time">15 min</div>
                 </div>
                 <div class="food-item-details">
                     <h3 class="food-item-title">Smash Cheeseburger</h3>
-                    <div class="food-item-meta">🍔 Caramelized Edges · American</div>
+                    <div class="food-item-meta">Caramelized Edges · American</div>
                 </div>
             </div>
 
             <div class="food-item-card" onclick="quickOrder('Street-Style Tacos al Pastor')">
                 <div class="thumb">
                     <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?auto=format&fit=crop&w=600&q=80" alt="Tacos">
-                    <div class="badge-time">⏱️ 25 min</div>
+                    <div class="badge-time">25 min</div>
                 </div>
                 <div class="food-item-details">
                     <h3 class="food-item-title">Tacos al Pastor</h3>
-                    <div class="food-item-meta">🌮 Spiced Pork & Pineapple · Mexican</div>
+                    <div class="food-item-meta">Spiced Pork & Pineapple · Mexican</div>
                 </div>
             </div>
         </div>
@@ -960,21 +987,27 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
         {recipe_content}
     </div>
 
-    <!-- Perks / Why Savor -->
+    <!-- Perks / Why Savor (Clean Minimalist Vector Icons) -->
     <section class="perks-strip" id="why-savor">
         <div class="perks-grid">
             <div class="perk-card">
-                <div class="perk-icon">⚡</div>
+                <div class="perk-icon-svg">
+                    <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
                 <h3 class="perk-heading">Instant Generation</h3>
                 <p class="perk-text">Zero 2,000-word food blog preludes. Get pure ingredients and numbered steps in under 2 seconds.</p>
             </div>
             <div class="perk-card">
-                <div class="perk-icon">👨‍🍳</div>
+                <div class="perk-icon-svg">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
                 <h3 class="perk-heading">Tested Chef Tips</h3>
                 <p class="perk-text">Every recipe includes a restaurant-grade secret tip to guarantee balanced flavor and perfect texture.</p>
             </div>
             <div class="perk-card">
-                <div class="perk-icon">⚖️</div>
+                <div class="perk-icon-svg">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
                 <h3 class="perk-heading">Exact Mise En Place</h3>
                 <p class="perk-text">Clear ingredient ratios and timings calibrated so you never guess oven temperatures or pan heat again.</p>
             </div>
@@ -1006,8 +1039,8 @@ def render_page(dish_val: str = "", recipe_content: str = "") -> str:
                 navigator.clipboard.writeText(body.innerText).then(() => {{
                     const btn = document.getElementById('copyRecipeBtn');
                     if (btn) {{
-                        btn.innerHTML = '✓ Copied';
-                        setTimeout(() => {{ btn.innerHTML = '📋 Copy Recipe'; }}, 2000);
+                        btn.innerHTML = 'Copied to Clipboard';
+                        setTimeout(() => {{ btn.innerHTML = 'Copy Recipe'; }}, 2000);
                     }}
                 }});
             }}
@@ -1031,7 +1064,7 @@ def get_recipe(dish: str = Form(...)):
         box = '''
         <div class="recipe-card-brand">
             <div class="recipe-header-bar">
-                <div class="recipe-header-badge">⚠️ Notice</div>
+                <div class="recipe-header-badge">Notice</div>
             </div>
             <div class="recipe-main-body" style="color: #FF5A36;">
                 GROQ_API_KEY environment variable is not set.
@@ -1040,7 +1073,7 @@ def get_recipe(dish: str = Form(...)):
         '''
         return render_page(dish_val=dish, recipe_content=box)
         
-    prompt = f"Give me a mouthwatering, complete step-by-step recipe for: {dish}"
+    prompt = f"Give me a professional, complete step-by-step recipe for: {dish}"
     try:
         response = client.chat.completions.create(
             model="openai/gpt-oss-120b",
@@ -1048,10 +1081,10 @@ def get_recipe(dish: str = Form(...)):
                 {
                     "role": "system",
                     "content": (
-                        "You are a top restaurant chef. When given a dish name, create a vibrant, mouthwatering, "
-                        "and crystal-clear step-by-step recipe in clean markdown.\n\n"
+                        "You are a top restaurant chef. When given a dish name, create a clean, elegant, "
+                        "and crystal-clear step-by-step recipe in markdown. Do NOT use any emojis anywhere.\n\n"
                         "Include:\n"
-                        "1. Dish Name (h1) with an appetizing 1-sentence intro\n"
+                        "1. Dish Name (h1) with a brief 1-sentence intro\n"
                         "2. Prep & Cook Times table (Prep Time, Cook Time, Total Time, Servings)\n"
                         "3. Ingredients table (Ingredient, Measurement, Notes)\n"
                         "4. Numbered step-by-step instructions\n"
@@ -1067,8 +1100,8 @@ def get_recipe(dish: str = Form(...)):
         box = f'''
         <div class="recipe-card-brand">
             <div class="recipe-header-bar">
-                <div class="recipe-header-badge">✨ Your Custom Recipe</div>
-                <button class="copy-btn-brand" id="copyRecipeBtn" onclick="copyRecipeText()">📋 Copy Recipe</button>
+                <div class="recipe-header-badge">Custom Recipe</div>
+                <button class="copy-btn-brand" id="copyRecipeBtn" onclick="copyRecipeText()">Copy Recipe</button>
             </div>
             <div class="recipe-main-body">{html_recipe}</div>
         </div>
@@ -1077,7 +1110,7 @@ def get_recipe(dish: str = Form(...)):
         box = f'''
         <div class="recipe-card-brand">
             <div class="recipe-header-bar">
-                <div class="recipe-header-badge">⚠️ Error</div>
+                <div class="recipe-header-badge">Error</div>
             </div>
             <div class="recipe-main-body" style="color: #FF5A36;">Error: {e}</div>
         </div>
